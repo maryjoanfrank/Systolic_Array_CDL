@@ -1,30 +1,28 @@
 CAPI=2:
-name: "u337mg030:ece337:sram_controller:1.0.0"
+name: "u337mg030:ece337:array:1.0.0"
 description: ""
 
 filesets:
     rtl:
         files:
-            - "source/sram_controller.sv"
+            - "source/array.sv"
         file_type: systemVerilogSource
         depend:
-            - "u337mg030:ece337:controller:1.0.0"
-            - "u337mg030:ece337:sram_buffer:1.0.0"
+            - "u337mg030:ece337:processingElement:1.0.0"
 
     synth:
         depend:
             - "ece337:tech:AMI_05_LIB"
-            - "u337mg030:ece337:sram_controller_syn"
+            - "u337mg030:ece337:array_syn"
 
     tb:
         files:
-            - "testbench/tb_sram_controller.sv"
-            - "waves/sram_controller.do": { file_type: user }
-            - "waves/sram_controller.gtkw": { file_type: user }
+            - "testbench/tb_array.sv"
+            - "waves/array.do": { file_type: user }
+            - "waves/array.gtkw": { file_type: user }
             # - "data/file.txt": { file_type: user }
         file_type: systemVerilogSource
-        depend:
-            - "ece337:course-lib:sram1024x32_wrapper"
+
     synfiles:
         depend:
             - "u337mg030:ece337:synfiles"
@@ -33,21 +31,21 @@ targets:
     default: &default
         filesets:
             - rtl
-        toplevel: sram_controller
+        toplevel: array
 
     sim: &sim
         <<: *default
         default_tool: verilator
         filesets_append:
             - tb
-        toplevel: tb_sram_controller
+        toplevel: tb_array
         tools:
             modelsim:
                 vsim_options:
                     - -vopt
                     - -voptargs='+acc'
                     - -t ps
-                    - -do waves/sram_controller.do
+                    - -do waves/array.do
                     - -onfinish stop
                     - -do "set PrefSource(OpenOnFinish) 0 ; set PrefMain(LinePrefix) \"\" ; set PrefMain(colorizeTranscript) 1"
                     - -coverage
@@ -80,7 +78,7 @@ targets:
         filesets_append:
             - synfiles
         default_tool: design_compiler
-        toplevel: sram_controller
+        toplevel: array
         tools:
             design_compiler:
                 script_dir: "src/u337mg030_ece337_synfiles_0"
