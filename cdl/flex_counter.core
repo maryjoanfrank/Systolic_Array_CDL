@@ -1,32 +1,23 @@
 CAPI=2:
-name: "u337mg030:ece337:fullInference:1.0.0"
-description: ""
+name: "u337mg030:ece337:flex_counter:1.0.0"
+description: "Parameterized counter"
 
 filesets:
     rtl:
         files:
-            - "source/fullInference.sv"
+            - "source/flex_counter.sv"
         file_type: systemVerilogSource
-        depend:
-            - "u337mg030:ece337:array:1.0.0"
-            - "u337mg030:ece337:byte_SR:1.0.0"
-            - "u337mg030:ece337:bias:1.0.0"
-            - "u337mg030:ece337:activations:1.0.0"
-            - "u337mg030:ece337:weight_counter:1.0.0"
-            - "u337mg030:ece337:mux21:1.0.0"
-            - "u337mg030:ece337:activate_timer:1.0.0"
 
     synth:
         depend:
             - "ece337:tech:AMI_05_LIB"
-            - "u337mg030:ece337:fullInference_syn"
+            - "u337mg030:ece337:flex_counter_syn"
 
     tb:
         files:
-            - "testbench/tb_fullInference.sv"
-            - "waves/fullInference.do": { file_type: user }
-            - "waves/fullInference.gtkw": { file_type: user }
-            # - "data/file.txt": { file_type: user }
+            - "testbench/tb_flex_counter.sv"
+            - "waves/flex_counter.do": { file_type: user }
+            - "waves/flex_counter.gtkw": { file_type: user }
         file_type: systemVerilogSource
 
     synfiles:
@@ -37,21 +28,21 @@ targets:
     default: &default
         filesets:
             - rtl
-        toplevel: fullInference
+        toplevel: flex_counter
 
     sim: &sim
         <<: *default
         default_tool: verilator
         filesets_append:
             - tb
-        toplevel: tb_fullInference
+        toplevel: tb_flex_counter
         tools:
             modelsim:
                 vsim_options:
                     - -vopt
                     - -voptargs='+acc'
                     - -t ps
-                    - -do waves/fullInference.do
+                    - -do waves/flex_counter.do
                     - -onfinish stop
                     - -do "set PrefSource(OpenOnFinish) 0 ; set PrefMain(LinePrefix) \"\" ; set PrefMain(colorizeTranscript) 1"
                     - -coverage
@@ -84,7 +75,7 @@ targets:
         filesets_append:
             - synfiles
         default_tool: design_compiler
-        toplevel: fullInference
+        toplevel: flex_counter
         tools:
             design_compiler:
                 script_dir: "src/u337mg030_ece337_synfiles_0"

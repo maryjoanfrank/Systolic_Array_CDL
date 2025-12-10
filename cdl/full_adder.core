@@ -1,33 +1,25 @@
 CAPI=2:
-name: "u337mg030:ece337:fullInference:1.0.0"
-description: ""
+name: "u337mg030:ece337:full_adder:1.0.0"
+description: "1-bit full adder"
 
 filesets:
     rtl:
         files:
-            - "source/fullInference.sv"
+            - "source/full_adder.sv"
         file_type: systemVerilogSource
-        depend:
-            - "u337mg030:ece337:array:1.0.0"
-            - "u337mg030:ece337:byte_SR:1.0.0"
-            - "u337mg030:ece337:bias:1.0.0"
-            - "u337mg030:ece337:activations:1.0.0"
-            - "u337mg030:ece337:weight_counter:1.0.0"
-            - "u337mg030:ece337:mux21:1.0.0"
-            - "u337mg030:ece337:activate_timer:1.0.0"
 
     synth:
         depend:
             - "ece337:tech:AMI_05_LIB"
-            - "u337mg030:ece337:fullInference_syn"
+            - "u337mg030:ece337:full_adder_syn"
 
     tb:
         files:
-            - "testbench/tb_fullInference.sv"
-            - "waves/fullInference.do": { file_type: user }
-            - "waves/fullInference.gtkw": { file_type: user }
-            # - "data/file.txt": { file_type: user }
+            - "waves/full_adder.do": { file_type: user }
+            - "waves/full_adder.gtkw": { file_type: user }
         file_type: systemVerilogSource
+        depend:
+            - "u337mg030:ece337:tb_full_adder"
 
     synfiles:
         depend:
@@ -37,21 +29,21 @@ targets:
     default: &default
         filesets:
             - rtl
-        toplevel: fullInference
+        toplevel: full_adder
 
     sim: &sim
         <<: *default
         default_tool: verilator
         filesets_append:
             - tb
-        toplevel: tb_fullInference
+        toplevel: tb_full_adder
         tools:
             modelsim:
                 vsim_options:
                     - -vopt
                     - -voptargs='+acc'
                     - -t ps
-                    - -do waves/fullInference.do
+                    - -do waves/full_adder.do
                     - -onfinish stop
                     - -do "set PrefSource(OpenOnFinish) 0 ; set PrefMain(LinePrefix) \"\" ; set PrefMain(colorizeTranscript) 1"
                     - -coverage
@@ -84,7 +76,7 @@ targets:
         filesets_append:
             - synfiles
         default_tool: design_compiler
-        toplevel: fullInference
+        toplevel: full_adder
         tools:
             design_compiler:
                 script_dir: "src/u337mg030_ece337_synfiles_0"

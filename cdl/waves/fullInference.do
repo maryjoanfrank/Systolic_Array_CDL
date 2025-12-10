@@ -10,8 +10,8 @@ add wave -noupdate /tb_fullInference/start_weights
 add wave -noupdate /tb_fullInference/start_array
 add wave -noupdate /tb_fullInference/DUT/load
 add wave -noupdate -divider outputs
-add wave -noupdate /tb_fullInference/activation_ready
-add wave -noupdate /tb_fullInference/activations
+add wave -noupdate /tb_fullInference/DUT/neuron_activation/activation_out
+add wave -noupdate /tb_fullInference/activated
 add wave -noupdate -divider array_internal
 add wave -noupdate /tb_fullInference/DUT/systolicArray/load
 add wave -noupdate /tb_fullInference/DUT/systolicArray/operand
@@ -84,38 +84,46 @@ add wave -noupdate -group weights {/tb_fullInference/DUT/systolicArray/vertical_
 add wave -noupdate -group weights {/tb_fullInference/DUT/systolicArray/vertical_loop[7]/horizontal_loop[5]/PE_XY/pex0/weight}
 add wave -noupdate -group weights {/tb_fullInference/DUT/systolicArray/vertical_loop[7]/horizontal_loop[6]/PE_XY/pex0/weight}
 add wave -noupdate -group weights {/tb_fullInference/DUT/systolicArray/vertical_loop[7]/horizontal_loop[7]/PE_XY/pex0/weight}
+add wave -noupdate -divider {activated timing}
+add wave -noupdate /tb_fullInference/DUT/activation_timer/activated
+add wave -noupdate /tb_fullInference/DUT/activation_timer/temp_activated
+add wave -noupdate /tb_fullInference/DUT/activation_timer/stall
+add wave -noupdate /tb_fullInference/DUT/activation_timer/computing
+add wave -noupdate -radix decimal /tb_fullInference/DUT/activation_timer/count
+add wave -noupdate /tb_fullInference/DUT/activation_timer/rollover_flag
+add wave -noupdate /tb_fullInference/DUT/activation_timer/trigger_array
 add wave -noupdate -divider staggering
 add wave -noupdate /tb_fullInference/DUT/array_input
 add wave -noupdate /tb_fullInference/DUT/temp_in
-add wave -noupdate -expand -group {input stagger} /tb_fullInference/DUT/row1/q
-add wave -noupdate -expand -group {input stagger} /tb_fullInference/DUT/row2/q
-add wave -noupdate -expand -group {input stagger} /tb_fullInference/DUT/row3/q
-add wave -noupdate -expand -group {input stagger} /tb_fullInference/DUT/row4/q
-add wave -noupdate -expand -group {input stagger} /tb_fullInference/DUT/row5/q
-add wave -noupdate -expand -group {input stagger} /tb_fullInference/DUT/row6/q
-add wave -noupdate -expand -group {input stagger} /tb_fullInference/DUT/row7/q
-add wave -noupdate -expand -group {input stagger} /tb_fullInference/DUT/row1/byte_out
-add wave -noupdate -expand -group {input stagger} /tb_fullInference/DUT/row2/byte_out
-add wave -noupdate -expand -group {input stagger} /tb_fullInference/DUT/row3/byte_out
-add wave -noupdate -expand -group {input stagger} /tb_fullInference/DUT/row4/byte_out
-add wave -noupdate -expand -group {input stagger} /tb_fullInference/DUT/row5/byte_out
-add wave -noupdate -expand -group {input stagger} /tb_fullInference/DUT/row6/byte_out
-add wave -noupdate -expand -group {input stagger} /tb_fullInference/DUT/row7/byte_out
+add wave -noupdate -group {input stagger} /tb_fullInference/DUT/row1/q
+add wave -noupdate -group {input stagger} /tb_fullInference/DUT/row2/q
+add wave -noupdate -group {input stagger} /tb_fullInference/DUT/row3/q
+add wave -noupdate -group {input stagger} /tb_fullInference/DUT/row4/q
+add wave -noupdate -group {input stagger} /tb_fullInference/DUT/row5/q
+add wave -noupdate -group {input stagger} /tb_fullInference/DUT/row6/q
+add wave -noupdate -group {input stagger} /tb_fullInference/DUT/row7/q
+add wave -noupdate -group {input stagger} /tb_fullInference/DUT/row1/byte_out
+add wave -noupdate -group {input stagger} /tb_fullInference/DUT/row2/byte_out
+add wave -noupdate -group {input stagger} /tb_fullInference/DUT/row3/byte_out
+add wave -noupdate -group {input stagger} /tb_fullInference/DUT/row4/byte_out
+add wave -noupdate -group {input stagger} /tb_fullInference/DUT/row5/byte_out
+add wave -noupdate -group {input stagger} /tb_fullInference/DUT/row6/byte_out
+add wave -noupdate -group {input stagger} /tb_fullInference/DUT/row7/byte_out
 add wave -noupdate /tb_fullInference/DUT/output_vector
-add wave -noupdate -expand -group {output stagger} /tb_fullInference/DUT/col0/q
-add wave -noupdate -expand -group {output stagger} /tb_fullInference/DUT/col1/q
-add wave -noupdate -expand -group {output stagger} /tb_fullInference/DUT/col2/q
-add wave -noupdate -expand -group {output stagger} /tb_fullInference/DUT/col3/q
-add wave -noupdate -expand -group {output stagger} /tb_fullInference/DUT/col4/q
-add wave -noupdate -expand -group {output stagger} /tb_fullInference/DUT/col5/q
-add wave -noupdate -expand -group {output stagger} /tb_fullInference/DUT/col6/q
-add wave -noupdate -expand -group {output stagger} /tb_fullInference/DUT/col0/byte_out
-add wave -noupdate -expand -group {output stagger} /tb_fullInference/DUT/col1/byte_out
-add wave -noupdate -expand -group {output stagger} /tb_fullInference/DUT/col2/byte_out
-add wave -noupdate -expand -group {output stagger} /tb_fullInference/DUT/col3/byte_out
-add wave -noupdate -expand -group {output stagger} /tb_fullInference/DUT/col4/byte_out
-add wave -noupdate -expand -group {output stagger} /tb_fullInference/DUT/col5/byte_out
-add wave -noupdate -expand -group {output stagger} /tb_fullInference/DUT/col6/byte_out
+add wave -noupdate -group {output stagger} /tb_fullInference/DUT/col0/q
+add wave -noupdate -group {output stagger} /tb_fullInference/DUT/col1/q
+add wave -noupdate -group {output stagger} /tb_fullInference/DUT/col2/q
+add wave -noupdate -group {output stagger} /tb_fullInference/DUT/col3/q
+add wave -noupdate -group {output stagger} /tb_fullInference/DUT/col4/q
+add wave -noupdate -group {output stagger} /tb_fullInference/DUT/col5/q
+add wave -noupdate -group {output stagger} /tb_fullInference/DUT/col6/q
+add wave -noupdate -group {output stagger} /tb_fullInference/DUT/col0/byte_out
+add wave -noupdate -group {output stagger} /tb_fullInference/DUT/col1/byte_out
+add wave -noupdate -group {output stagger} /tb_fullInference/DUT/col2/byte_out
+add wave -noupdate -group {output stagger} /tb_fullInference/DUT/col3/byte_out
+add wave -noupdate -group {output stagger} /tb_fullInference/DUT/col4/byte_out
+add wave -noupdate -group {output stagger} /tb_fullInference/DUT/col5/byte_out
+add wave -noupdate -group {output stagger} /tb_fullInference/DUT/col6/byte_out
 add wave -noupdate -divider bias
 add wave -noupdate /tb_fullInference/DUT/bias_adder/array_output
 add wave -noupdate /tb_fullInference/bias_vec
@@ -130,9 +138,9 @@ add wave -noupdate {/tb_fullInference/DUT/bias_adder/adders[0]/biasAdd/SIZE}
 add wave -noupdate {/tb_fullInference/DUT/bias_adder/adders[0]/biasAdd/sum}
 add wave -noupdate -divider activate
 add wave -noupdate /tb_fullInference/activation_mode
-add wave -noupdate /tb_fullInference/DUT/neuron_activation/activation_out
+add wave -noupdate /tb_fullInference/activations
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {119971 ps} 0}
+WaveRestoreCursors {{Cursor 1} {132271 ps} 0} {{Cursor 2} {340817 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 385
 configure wave -valuecolwidth 205
@@ -148,4 +156,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {31350 ps} {598350 ps}
+WaveRestoreZoom {0 ps} {567 ns}

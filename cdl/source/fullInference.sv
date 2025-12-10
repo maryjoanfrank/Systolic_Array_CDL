@@ -4,14 +4,13 @@ module fullInference #(
     // parameters
 ) (
     input clk, n_rst,
-    input logic start_weights, /*start_array,*/ enable,
+    input logic start_weights, start_array, enable,
     input logic [63:0] systolic_data, bias_vec,
-    /*input logic [6:0] num_inputs,*/
+    // input logic [6:0] num_input,
     input logic [1:0] activation_mode,
-    output logic [63:0] activations/*,
-    output logic activation_ready*/
+    output logic [63:0] activations,
+    output logic activated
 );
-
 // logic /*trigger_weight,*/ trigger_array;
 
 // logic a, b/*, x, y*/;
@@ -42,6 +41,7 @@ module fullInference #(
 
     array systolicArray (.clk(clk), .n_rst(n_rst), .array_input(array_input), .load(load || start_weights), .enable(enable), .array_output(array_output));
 
+activate_timer activation_timer (.clk(clk), .n_rst(n_rst), .num_inputs(7'h8), .trigger_array(start_array), .stall(~(~(load || start_weights) && enable)), .activated(activated));
 weight_counter load_timing (.clk(clk), .n_rst(n_rst), .trigger_weight(start_weights), .load(load));
 
 // triangular FIFOs

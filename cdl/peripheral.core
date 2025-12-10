@@ -1,33 +1,31 @@
 CAPI=2:
-name: "u337mg030:ece337:fullInference:1.0.0"
+name: "u337mg030:ece337:peripheral:1.0.0"
 description: ""
 
 filesets:
     rtl:
         files:
-            - "source/fullInference.sv"
+            - "source/peripheral.sv"
         file_type: systemVerilogSource
         depend:
-            - "u337mg030:ece337:array:1.0.0"
-            - "u337mg030:ece337:byte_SR:1.0.0"
-            - "u337mg030:ece337:bias:1.0.0"
-            - "u337mg030:ece337:activations:1.0.0"
-            - "u337mg030:ece337:weight_counter:1.0.0"
-            - "u337mg030:ece337:mux21:1.0.0"
-            - "u337mg030:ece337:activate_timer:1.0.0"
+            - "u337mg030:ece337:sram_controller:1.0.0"
+            - "u337mg030:ece337:fullInference:1.0.0"
+
 
     synth:
         depend:
             - "ece337:tech:AMI_05_LIB"
-            - "u337mg030:ece337:fullInference_syn"
+            - "u337mg030:ece337:peripheral_syn"
 
     tb:
         files:
-            - "testbench/tb_fullInference.sv"
-            - "waves/fullInference.do": { file_type: user }
-            - "waves/fullInference.gtkw": { file_type: user }
+            - "testbench/tb_peripheral.sv"
+            - "waves/peripheral.do": { file_type: user }
+            - "waves/peripheral.gtkw": { file_type: user }
             # - "data/file.txt": { file_type: user }
         file_type: systemVerilogSource
+        depend:
+            - "ece337:course-lib:sram1024x32_wrapper"
 
     synfiles:
         depend:
@@ -37,21 +35,21 @@ targets:
     default: &default
         filesets:
             - rtl
-        toplevel: fullInference
+        toplevel: peripheral
 
     sim: &sim
         <<: *default
         default_tool: verilator
         filesets_append:
             - tb
-        toplevel: tb_fullInference
+        toplevel: tb_peripheral
         tools:
             modelsim:
                 vsim_options:
                     - -vopt
                     - -voptargs='+acc'
                     - -t ps
-                    - -do waves/fullInference.do
+                    - -do waves/peripheral.do
                     - -onfinish stop
                     - -do "set PrefSource(OpenOnFinish) 0 ; set PrefMain(LinePrefix) \"\" ; set PrefMain(colorizeTranscript) 1"
                     - -coverage
@@ -84,7 +82,7 @@ targets:
         filesets_append:
             - synfiles
         default_tool: design_compiler
-        toplevel: fullInference
+        toplevel: peripheral
         tools:
             design_compiler:
                 script_dir: "src/u337mg030_ece337_synfiles_0"

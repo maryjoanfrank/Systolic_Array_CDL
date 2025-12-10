@@ -9,7 +9,9 @@ module bias (
 );
 
 // logic [63:0] bias_output_n, temp;
+        /* verilator lint_off UNOPTFLAT*/
 logic [7:0] [8:0] temp;
+        /* verilator lint_on UNOPTFLAT*/
 logic [7:0] [7:0] bias_output_n;
 
 
@@ -29,8 +31,11 @@ end
 generate
     genvar i;
     for (i = 0; i < 8; i++) begin : adders
+        /*verilator lint_off PINCONNECTEMPTY*/
         adder_nbit #(.SIZE(8)) biasAdd (.a(array_output[(8*i + 7) : 8*i]), .b(bias_vec[(8*i + 7) : 8*i]), .carry_in(0), .carry_out(), .sum(temp[i][7:0])) ;
+        /*verilator lint_on PINCONNECTEMPTY*/
         // assign temp[i] = $signed(array_output[(8*i + 7) : 8*i]) + $signed(bias_vec[(8*i + 7) : 8*i]);
+        
         assign temp[i][8] = temp[i][7];
 
         always_comb begin : clipping

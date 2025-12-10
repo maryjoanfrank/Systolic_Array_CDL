@@ -12,9 +12,9 @@ module tb_fullInference ();
 
     logic clk, n_rst;
 
-    logic start_weights, start_array, enable, activation_ready;
+    logic start_weights, start_array, enable, activated;
     logic [63:0] systolic_data, bias_vec, activations;
-    // logic [6:0] num_inputs;
+    logic [6:0] num_input;
     logic [1:0] activation_mode;
 
 
@@ -45,12 +45,12 @@ module tb_fullInference ();
     endtask //
     initial begin
         n_rst = 1;
-        // start_array = 0;
+        start_array = 0;
         start_weights = 0;
         activation_mode = 2'd2;
         systolic_data = 0;
-        bias_vec = 64'hb0b0b0b0b0b0b0b0;
-
+        bias_vec = 64'h0;
+        num_input = 7'd3;
         enable = 0;
         
         reset_dut;
@@ -93,9 +93,11 @@ module tb_fullInference ();
         
         @(negedge clk);
         enable = 1;
+        start_array = 1;
         systolic_data = 64'h0102030405060708;
 
         @(negedge clk);
+        start_array = 0;
         systolic_data = 64'h050a050a050a050a;
         
         @(negedge clk);

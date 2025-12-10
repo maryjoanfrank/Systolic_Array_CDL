@@ -1,5 +1,5 @@
 CAPI=2:
-name: "u337mg166:ece337:controller:1.0.0"
+name: "u337mg030:ece337:controller:1.0.0"
 description: ""
 
 filesets:
@@ -8,12 +8,12 @@ filesets:
             - "source/controller.sv"
         file_type: systemVerilogSource
         depend:
-            - "u337mg166:ece337:flex_counter:1.0.0"
+            - "u337mg030:ece337:flex_counter:1.0.0"
 
     synth:
         depend:
             - "ece337:tech:AMI_05_LIB"
-            - "u337mg166:ece337:controller_syn"
+            - "u337mg030:ece337:controller_syn"
 
     tb:
         files:
@@ -25,7 +25,7 @@ filesets:
 
     synfiles:
         depend:
-            - "u337mg166:ece337:synfiles"
+            - "u337mg030:ece337:synfiles"
 
 targets:
     default: &default
@@ -81,7 +81,7 @@ targets:
         toplevel: controller
         tools:
             design_compiler:
-                script_dir: "src/u337mg166_ece337_synfiles_0"
+                script_dir: "src/u337mg030_ece337_synfiles_0"
                 dc_script: "synth.tcl"
                 report_dir: "reports"
                 target_library: "/home/ecegrid/a/ece337/summer24-refactor/tech/ami05/osu05_stdcells.db"
