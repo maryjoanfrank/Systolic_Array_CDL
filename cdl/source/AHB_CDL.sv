@@ -974,8 +974,8 @@ module AHB_CDL (
                     10'h015: begin
                         if (hsize_reg == 3'd3) store_hrdata = bias;
                         else if (hsize_reg == 3'd2)  store_hrdata = {bias[63:32], 32'd0};
-                        else if (hsize_reg == 3'd1)  store_hrdata = {7'd0, bias[55:40], 40'd0};
-                        else store_hrdata = {15'd0,bias[47:40], 40'd0};
+                        else if (hsize_reg == 3'd1)  store_hrdata = {8'd0, bias[55:40], 40'd0};
+                        else store_hrdata = {16'd0,bias[47:40], 40'd0};
                     end
                     10'h016: begin
                         if (hsize_reg == 3'd3) store_hrdata = bias;
@@ -1055,10 +1055,10 @@ module AHB_CDL (
                             store_hrdata = {output_reg[63:32], 32'd0};
                         end 
                         else if(hsize_reg == 3'd1) begin
-                            store_hrdata = {7'd0, output_reg[55:40], 40'd0};
+                            store_hrdata = {8'd0, output_reg[55:40], 40'd0};
                         end
                         else begin
-                            store_hrdata = {15'd0, output_reg[47:40], 40'd0};
+                            store_hrdata = {16'd0, output_reg[47:40], 40'd0};
                         end
                     end
                     10'h01E:begin
