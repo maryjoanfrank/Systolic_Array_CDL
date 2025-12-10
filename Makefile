@@ -2,7 +2,7 @@
 VERSION = 1.2.1
 SHELL = /bin/bash
 
-MG = u337mg166
+MG = u337mg030
 COURSE = ece337
 
 # DEBUG ENABLE

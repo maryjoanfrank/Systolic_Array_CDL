@@ -1,0 +1,133 @@
+version: 0.2.1
+dependencies:
+  ece337:course-lib:ahb_model_updated:1.0.0: []
+  ece337:course-lib:sram1024x32_wrapper:1.0.0: []
+  u337mg030:ece337:activations:1.0.0: []
+  u337mg030:ece337:bias:1.0.0: []
+  u337mg030:ece337:byte_SR:1.0.0: []
+  u337mg030:ece337:flex_counter:1.0.0: []
+  u337mg030:ece337:full_adder:1.0.0: []
+  u337mg030:ece337:mux21:1.0.0: []
+  u337mg030:ece337:sram_buffer:1.0.0: []
+  u337mg026:ece337:AHB_CDL:1.0.0:
+  - ece337:course-lib:ahb_model_updated:1.0.0
+  u337mg030:ece337:activate_timer:1.0.0:
+  - u337mg030:ece337:flex_counter:1.0.0
+  u337mg030:ece337:adder_nbit:0:
+  - u337mg030:ece337:full_adder:1.0.0
+  u337mg030:ece337:controller:1.0.0:
+  - u337mg030:ece337:flex_counter:1.0.0
+  u337mg030:ece337:weight_counter:1.0.0:
+  - u337mg030:ece337:flex_counter:1.0.0
+  u337mg030:ece337:processingElement:1.0.0:
+  - u337mg030:ece337:adder_nbit:0
+  - u337mg030:ece337:mux21:1.0.0
+  u337mg030:ece337:sram_controller:1.0.0:
+  - u337mg030:ece337:controller:1.0.0
+  - u337mg030:ece337:sram_buffer:1.0.0
+  u337mg030:ece337:array:1.0.0:
+  - u337mg030:ece337:processingElement:1.0.0
+  u337mg030:ece337:fullInference:1.0.0:
+  - u337mg030:ece337:activate_timer:1.0.0
+  - u337mg030:ece337:activations:1.0.0
+  - u337mg030:ece337:array:1.0.0
+  - u337mg030:ece337:bias:1.0.0
+  - u337mg030:ece337:byte_SR:1.0.0
+  - u337mg030:ece337:mux21:1.0.0
+  - u337mg030:ece337:weight_counter:1.0.0
+  u337mg030:ece337:peripheral:1.0.0:
+  - u337mg030:ece337:fullInference:1.0.0
+  - u337mg030:ece337:sram_controller:1.0.0
+  u337mg030:ece337:top:1.0.0:
+  - ece337:course-lib:sram1024x32_wrapper:1.0.0
+  - u337mg026:ece337:AHB_CDL:1.0.0
+  - u337mg030:ece337:peripheral:1.0.0
+files:
+- file_type: systemVerilogSource
+  name: src/ece337_course-lib_ahb_model_updated_1.0.0/source/ahb_model_updated.sv
+  core: ece337:course-lib:ahb_model_updated:1.0.0
+- file_type: systemVerilogSource
+  name: src/ece337_course-lib_sram1024x32_wrapper_1.0.0/source/sram1024x32_wrapper.sv
+  core: ece337:course-lib:sram1024x32_wrapper:1.0.0
+- file_type: systemVerilogSource
+  name: src/u337mg030_ece337_activations_1.0.0/source/activations.sv
+  core: u337mg030:ece337:activations:1.0.0
+- file_type: systemVerilogSource
+  name: src/u337mg030_ece337_bias_1.0.0/source/bias.sv
+  core: u337mg030:ece337:bias:1.0.0
+- file_type: systemVerilogSource
+  name: src/u337mg030_ece337_byte_SR_1.0.0/source/byte_SR.sv
+  core: u337mg030:ece337:byte_SR:1.0.0
+- file_type: systemVerilogSource
+  name: src/u337mg030_ece337_flex_counter_1.0.0/source/flex_counter.sv
+  core: u337mg030:ece337:flex_counter:1.0.0
+- file_type: systemVerilogSource
+  name: src/u337mg030_ece337_full_adder_1.0.0/source/full_adder.sv
+  core: u337mg030:ece337:full_adder:1.0.0
+- file_type: systemVerilogSource
+  name: src/u337mg030_ece337_mux21_1.0.0/source/mux21.sv
+  core: u337mg030:ece337:mux21:1.0.0
+- file_type: systemVerilogSource
+  name: src/u337mg030_ece337_sram_buffer_1.0.0/source/sram_buffer.sv
+  core: u337mg030:ece337:sram_buffer:1.0.0
+- file_type: systemVerilogSource
+  name: src/u337mg026_ece337_AHB_CDL_1.0.0/source/AHB_CDL.sv
+  core: u337mg026:ece337:AHB_CDL:1.0.0
+- file_type: systemVerilogSource
+  name: src/u337mg030_ece337_activate_timer_1.0.0/source/activate_timer.sv
+  core: u337mg030:ece337:activate_timer:1.0.0
+- file_type: systemVerilogSource
+  name: src/u337mg030_ece337_adder_nbit_0/source/adder_nbit.sv
+  core: u337mg030:ece337:adder_nbit:0
+- file_type: systemVerilogSource
+  name: src/u337mg030_ece337_controller_1.0.0/source/controller.sv
+  core: u337mg030:ece337:controller:1.0.0
+- file_type: systemVerilogSource
+  name: src/u337mg030_ece337_weight_counter_1.0.0/source/weight_counter.sv
+  core: u337mg030:ece337:weight_counter:1.0.0
+- file_type: systemVerilogSource
+  name: src/u337mg030_ece337_processingElement_1.0.0/source/processingElement.sv
+  core: u337mg030:ece337:processingElement:1.0.0
+- file_type: systemVerilogSource
+  name: src/u337mg030_ece337_sram_controller_1.0.0/source/sram_controller.sv
+  core: u337mg030:ece337:sram_controller:1.0.0
+- file_type: systemVerilogSource
+  name: src/u337mg030_ece337_array_1.0.0/source/array.sv
+  core: u337mg030:ece337:array:1.0.0
+- file_type: systemVerilogSource
+  name: src/u337mg030_ece337_fullInference_1.0.0/source/fullInference.sv
+  core: u337mg030:ece337:fullInference:1.0.0
+- file_type: systemVerilogSource
+  name: src/u337mg030_ece337_peripheral_1.0.0/source/peripheral.sv
+  core: u337mg030:ece337:peripheral:1.0.0
+- file_type: systemVerilogSource
+  name: src/u337mg030_ece337_top_1.0.0/source/top.sv
+  core: u337mg030:ece337:top:1.0.0
+- file_type: systemVerilogSource
+  name: src/u337mg030_ece337_top_1.0.0/testbench/tb_top.sv
+  core: u337mg030:ece337:top:1.0.0
+- file_type: user
+  name: src/u337mg030_ece337_top_1.0.0/waves/top.do
+  core: u337mg030:ece337:top:1.0.0
+- file_type: user
+  name: src/u337mg030_ece337_top_1.0.0/waves/top.gtkw
+  core: u337mg030:ece337:top:1.0.0
+hooks: {}
+name: u337mg030_ece337_top_1.0.0
+parameters: {}
+tool_options:
+  modelsim:
+    vsim_options:
+    - -vopt
+    - -voptargs='+acc'
+    - -t ps
+    - -do waves/top.do
+    - -onfinish stop
+    - -do "set PrefSource(OpenOnFinish) 0 ; set PrefMain(LinePrefix) \"\" ; set PrefMain(colorizeTranscript)
+      1"
+    - -coverage
+    vlog_options:
+    - +cover
+toplevel: tb_top
+vpi: []
+flow_options: {}

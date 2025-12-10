@@ -1,0 +1,146 @@
+Info: [VCS_SAVE_RESTORE_INFO] ASLR (Address Space Layout Randomization) is detected on the machine. To enable $save functionality, ASLR will be switched off and simv re-executed.
+Please use '-no_save' simv switch to avoid this.
+
+                           Design Compiler Graphical 
+                                 DC Ultra (TM)
+                                  DFTMAX (TM)
+                              Power Compiler (TM)
+                                 DesignWare (R)
+                                 DC Expert (TM)
+                               Design Vision (TM)
+                               HDL Compiler (TM)
+                               VHDL Compiler (TM)
+                                  DFT Compiler
+                               Design Compiler(R)
+
+               Version W-2024.09-SP4 for linux64 - Feb 26, 2025 
+
+                    Copyright (c) 1988 - 2025 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+Initializing...
+Initializing gui preferences from file  /home/ecegridfs/a/337mg030/.synopsys_dc_gui/preferences.tcl
+Current time:       Tue Dec  9 17:49:47 2025
+Hostname:           ececomp4.ecn.purdue.edu
+CPU Model:          AMD EPYC 7513 32-Core Processor
+CPU Details:        Cores = 128 : Sockets = 2 : Cache Size = 512 KB : Freq = 3.35 GHz
+OS:                 Linux 4.18.0-553.78.1.el8_10.x86_64
+RAM:                502 GB (Free  31 GB)
+Swap:                63 GB (Free  20 GB)
+Work Filesystem:    /home/ecegridfs/a mounted to ecegridfs.ecn.purdue.edu:/export/home/a
+Tmp Filesystem:     /tmp mounted to tmpfs
+Work Disk:          2968 GB (Free   8 GB)
+Tmp Disk:            19 GB (Free  17 GB)
+
+CPU Load: 21%, Ram Free: 31 GB, Swap Free: 20 GB, Work Disk Free: 8 GB, Tmp Disk Free: 17 GB
+############################################
+#
+# Auto-generated project tcl file:
+#  * sets up variable
+#  * runs customized script
+#
+############################################
+sh date
+Tue Dec  9 17:49:47 EST 2025
+set TOP_MODULE peripheral
+peripheral
+set DC_SCRIPT synth.tcl
+synth.tcl
+set READ_SOURCES u337mg030_ece337_peripheral_1.0.0-read-sources
+u337mg030_ece337_peripheral_1.0.0-read-sources
+set SCRIPT_DIR src/u337mg030_ece337_synfiles_0
+src/u337mg030_ece337_synfiles_0
+set REPORT_DIR reports
+reports
+sh mkdir -p ${REPORT_DIR}
+set target_library /home/ecegrid/a/ece337/summer24-refactor/tech/ami05/osu05_stdcells.db
+/home/ecegrid/a/ece337/summer24-refactor/tech/ami05/osu05_stdcells.db
+set link_library   [concat "*"  /home/ecegrid/a/ece337/summer24-refactor/tech/ami05/osu05_stdcells.db dw_foundation.sldb]
+* /home/ecegrid/a/ece337/summer24-refactor/tech/ami05/osu05_stdcells.db dw_foundation.sldb
+############################################
+#
+# Run custom script
+#
+############################################
+source ${SCRIPT_DIR}/${DC_SCRIPT}
+Running PRESTO HDLC
+Compiling source file ./src/u337mg030_ece337_activations_1.0.0/source/activations.sv
+Presto compilation completed successfully.
+Loading db file '/home/ecegrid/a/ece337/summer24-refactor/tech/ami05/osu05_stdcells.db'
+Loading db file '/package/eda/synopsys/syn/W-2024.09-SP4/libraries/syn/dw_foundation.sldb'
+Running PRESTO HDLC
+Compiling source file ./src/u337mg030_ece337_bias_1.0.0/source/bias.sv
+Presto compilation completed successfully.
+Running PRESTO HDLC
+Compiling source file ./src/u337mg030_ece337_byte_SR_1.0.0/source/byte_SR.sv
+Presto compilation completed successfully.
+Running PRESTO HDLC
+Compiling source file ./src/u337mg030_ece337_flex_counter_1.0.0/source/flex_counter.sv
+Presto compilation completed successfully.
+Running PRESTO HDLC
+Compiling source file ./src/u337mg030_ece337_full_adder_1.0.0/source/full_adder.sv
+Presto compilation completed successfully.
+Running PRESTO HDLC
+Compiling source file ./src/u337mg030_ece337_mux21_1.0.0/source/mux21.sv
+Presto compilation completed successfully.
+Running PRESTO HDLC
+Compiling source file ./src/u337mg030_ece337_sram_buffer_1.0.0/source/sram_buffer.sv
+Presto compilation completed successfully.
+Running PRESTO HDLC
+Compiling source file ./src/u337mg030_ece337_activate_timer_1.0.0/source/activate_timer.sv
+Presto compilation completed successfully.
+Running PRESTO HDLC
+Compiling source file ./src/u337mg030_ece337_adder_nbit_0/source/adder_nbit.sv
+Presto compilation completed successfully.
+Running PRESTO HDLC
+Compiling source file ./src/u337mg030_ece337_controller_1.0.0/source/controller.sv
+Presto compilation completed successfully.
+Running PRESTO HDLC
+Compiling source file ./src/u337mg030_ece337_weight_counter_1.0.0/source/weight_counter.sv
+Presto compilation completed successfully.
+Running PRESTO HDLC
+Compiling source file ./src/u337mg030_ece337_processingElement_1.0.0/source/processingElement.sv
+Presto compilation completed successfully.
+Running PRESTO HDLC
+Compiling source file ./src/u337mg030_ece337_sram_controller_1.0.0/source/sram_controller.sv
+Error:  ./src/u337mg030_ece337_sram_controller_1.0.0/source/sram_controller.sv:114: Instantiation inst_sram_buffer has mixed ordered and named port connections (VER-147)
+*** Presto compilation terminated with 1 errors. ***
+Running PRESTO HDLC
+Compiling source file ./src/u337mg030_ece337_array_1.0.0/source/array.sv
+Presto compilation completed successfully.
+Running PRESTO HDLC
+Compiling source file ./src/u337mg030_ece337_fullInference_1.0.0/source/fullInference.sv
+Presto compilation completed successfully.
+Running PRESTO HDLC
+Compiling source file ./src/u337mg030_ece337_peripheral_1.0.0/source/peripheral.sv
+Presto compilation completed successfully.
+Loading db file '/package/eda/synopsys/syn/W-2024.09-SP4/libraries/syn/gtech.db'
+Loading db file '/package/eda/synopsys/syn/W-2024.09-SP4/libraries/syn/standard.sldb'
+  Loading link library 'osu05_stdcells'
+  Loading link library 'gtech'
+Running PRESTO HDLC
+Error:  ./src/u337mg030_ece337_peripheral_1.0.0/source/peripheral.sv:28: No module or interface 'sram_controller' has been loaded and/or analyzed. (ELAB-197)
+*** Presto compilation terminated with 1 errors. ***
+Error: Current design is not defined. (UID-4)
+Error: Current design is not defined. (UID-4)
+Error: No files or designs were specified. (UID-22)
+Error: Current design is not defined. (UID-4)
+
+Memory usage for this session 117 Mbytes.
+Memory usage for this session including child processes 117 Mbytes.
+CPU usage for this session 3 seconds ( 0.00 hours ).
+Elapsed time for this session 3 seconds ( 0.00 hours ).
+
+Thank you...
