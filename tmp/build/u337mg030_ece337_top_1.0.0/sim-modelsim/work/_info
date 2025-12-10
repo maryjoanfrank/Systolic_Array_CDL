@@ -9,12 +9,12 @@ z2
 !i10e 25
 !i10f 100
 cModel Technology
-Z0 d/home/ecegridfs/a/337mg030/Systolic_Array_CDL/tmp/build/u337mg030_ece337_top_1.0.0/sim-modelsim
+Z0 d/home/ecegridfs/a/337mg166/ece337/Systolic_Array_CDL/tmp/build/u337mg030_ece337_top_1.0.0/sim-modelsim
 T_opt
-!s110 1765367820
-V4A`0ZBXHf:2U]QI^IVd5l2
+!s110 1765387110
+Vn;Uh7ADSF`@Y^^aFM1a`90
 04 6 4 work tb_top fast 0
-=1-b49691d916b5-6939600b-bb01b-1112a6
+=1-b49691d5d9c5-6939ab66-9e50-273e7c
 !s124 OEM100
 o-quiet -auto_acc_if_foreign -work work +acc
 Z1 tCvgOpt 0
@@ -22,53 +22,53 @@ n@_opt
 OL;O;2021.4;73
 vactivate_timer
 Z2 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
-Z3 !s110 1765367814
+Z3 !s110 1765387104
 !i10b 1
 !s100 0lMJK1UY;=IR3Z;3>ed>f3
 I]@E[HCOkfnb09NdAU08P72
 S1
 R0
-Z4 w1765365131
+w1765385727
 8src/u337mg030_ece337_activate_timer_1.0.0/source/activate_timer.sv
 Fsrc/u337mg030_ece337_activate_timer_1.0.0/source/activate_timer.sv
 !i122 10
 L0 3 87
-Z5 VDg1SIo80bB@j0V0VzS_@n1
-Z6 OL;L;2021.4;73
+Z4 VDg1SIo80bB@j0V0VzS_@n1
+Z5 OL;L;2021.4;73
 r1
 !s85 0
 31
-Z7 !s108 1765367814.000000
+Z6 !s108 1765387104.000000
 !s107 src/u337mg030_ece337_activate_timer_1.0.0/source/activate_timer.sv|
 !s90 +cover|-sv|-quiet|-work|work|src/u337mg030_ece337_activate_timer_1.0.0/source/activate_timer.sv|
 !i113 0
-Z8 !s102 +cover
-Z9 o-quiet +cover -sv -work work -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+Z7 !s102 +cover
+Z8 o-quiet +cover -sv -work work -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
 R1
 vactivations
 R2
-Z10 !s110 1765367813
+R3
 !i10b 1
 !s100 mniTIdB<`S8=:W[5AK1C30
 Iebj2P`dGWhh_MM2?h@J1I3
 S1
 R0
-R4
+Z9 w1765369433
 8src/u337mg030_ece337_activations_1.0.0/source/activations.sv
 Fsrc/u337mg030_ece337_activations_1.0.0/source/activations.sv
 !i122 2
 L0 8 56
+R4
 R5
-R6
 r1
 !s85 0
 31
-Z11 !s108 1765367813.000000
+R6
 !s107 src/u337mg030_ece337_activations_1.0.0/source/activations.sv|
 !s90 +cover|-sv|-quiet|-work|work|src/u337mg030_ece337_activations_1.0.0/source/activations.sv|
 !i113 0
+R7
 R8
-R9
 R1
 vadder_nbit
 R2
@@ -78,174 +78,174 @@ R3
 Io=aG]gSN[hkKT>@IQMABF0
 S1
 R0
-R4
+R9
 8src/u337mg030_ece337_adder_nbit_0/source/adder_nbit.sv
 Fsrc/u337mg030_ece337_adder_nbit_0/source/adder_nbit.sv
 !i122 11
 L0 3 52
+R4
 R5
-R6
 r1
 !s85 0
 31
-R7
+R6
 !s107 src/u337mg030_ece337_adder_nbit_0/source/adder_nbit.sv|
 !s90 +cover|-sv|-quiet|-work|work|src/u337mg030_ece337_adder_nbit_0/source/adder_nbit.sv|
 !i113 0
+R7
 R8
-R9
 R1
 vAHB_CDL
 R2
 R3
 !i10b 1
-!s100 Z9OWnaT9Dg7:?0g1`D]AW0
-IdCaf[ebfj5f6<5ISUBzdO0
+!s100 OTm:TnmlEz5^UOPKgo]Sa0
+ID;MOnZfG21om4CTdk2@m;0
 S1
 R0
-w1765366621
+w1765384161
 8src/u337mg026_ece337_AHB_CDL_1.0.0/source/AHB_CDL.sv
 Fsrc/u337mg026_ece337_AHB_CDL_1.0.0/source/AHB_CDL.sv
 !i122 9
-L0 3 1183
+L0 3 1220
+R4
 R5
-R6
 r1
 !s85 0
 31
-R7
+R6
 !s107 src/u337mg026_ece337_AHB_CDL_1.0.0/source/AHB_CDL.sv|
 !s90 +cover|-sv|-quiet|-work|work|src/u337mg026_ece337_AHB_CDL_1.0.0/source/AHB_CDL.sv|
 !i113 0
+R7
 R8
-R9
 R1
 n@a@h@b_@c@d@l
 vahb_model_updated
 R2
-R10
+R3
 !i10b 1
 !s100 ]0K>]BFiiV<[Xk@ID=d=^3
 I0hGX^2UUkc^Ue<03Nh1X]2
 S1
 R0
-Z12 w1764708619
+Z10 w1764708619
 8src/ece337_course-lib_ahb_model_updated_1.0.0/source/ahb_model_updated.sv
 Fsrc/ece337_course-lib_ahb_model_updated_1.0.0/source/ahb_model_updated.sv
 !i122 0
 L0 11 345
+R4
 R5
-R6
 r1
 !s85 0
 31
-R11
+!s108 1765387103.000000
 !s107 src/ece337_course-lib_ahb_model_updated_1.0.0/source/ahb_model_updated.sv|
 !s90 +cover|-sv|-quiet|-work|work|src/ece337_course-lib_ahb_model_updated_1.0.0/source/ahb_model_updated.sv|
 !i113 0
+R7
 R8
-R9
 R1
 varray
 R2
-R3
+Z11 !s110 1765387105
 !i10b 1
 !s100 TiA:9MEIZ_0`@8z66C29z2
 IaJ^Q1cnVVC7FN^9lNT2h`1
 S1
 R0
-R4
+R9
 8src/u337mg030_ece337_array_1.0.0/source/array.sv
 Fsrc/u337mg030_ece337_array_1.0.0/source/array.sv
 !i122 16
 L0 3 61
+R4
 R5
-R6
 r1
 !s85 0
 31
-R7
+Z12 !s108 1765387105.000000
 !s107 src/u337mg030_ece337_array_1.0.0/source/array.sv|
 !s90 +cover|-sv|-quiet|-work|work|src/u337mg030_ece337_array_1.0.0/source/array.sv|
 !i113 0
+R7
 R8
-R9
 R1
 vbias
 R2
-R10
+R3
 !i10b 1
 !s100 HRJhN6N]Wg[ZP;`D?c4CT3
 Ibg6d3`W^ehCVLAJ4g=lfK3
 S1
 R0
-R4
+R9
 8src/u337mg030_ece337_bias_1.0.0/source/bias.sv
 Fsrc/u337mg030_ece337_bias_1.0.0/source/bias.sv
 !i122 3
 L0 4 51
+R4
 R5
-R6
 r1
 !s85 0
 31
-R11
+R6
 !s107 src/u337mg030_ece337_bias_1.0.0/source/bias.sv|
 !s90 +cover|-sv|-quiet|-work|work|src/u337mg030_ece337_bias_1.0.0/source/bias.sv|
 !i113 0
+R7
 R8
-R9
 R1
 vbyte_SR
 R2
-R10
+R3
 !i10b 1
 !s100 W9Jz3O0bASHP:JHH`MQ?g0
 IzG46_T1X@[=ecQn6e63QD2
 S1
 R0
-R4
+R9
 8src/u337mg030_ece337_byte_SR_1.0.0/source/byte_SR.sv
 Fsrc/u337mg030_ece337_byte_SR_1.0.0/source/byte_SR.sv
 !i122 4
 L0 6 57
+R4
 R5
-R6
 r1
 !s85 0
 31
-R11
+R6
 !s107 src/u337mg030_ece337_byte_SR_1.0.0/source/byte_SR.sv|
 !s90 +cover|-sv|-quiet|-work|work|src/u337mg030_ece337_byte_SR_1.0.0/source/byte_SR.sv|
 !i113 0
+R7
 R8
-R9
 R1
 nbyte_@s@r
 vcontroller
 R2
-R3
+R11
 !i10b 1
-!s100 1K8Z:SM[Zl]^Z>7_RNmPf3
-I3Y]?`?H27VR1d=nn4N1;W1
+!s100 EFY:C0MPNJ0^`Bf@izNR_0
+IPkj=RdnBKj]4AD_j=^OTE2
 S1
 R0
-R4
+w1765386155
 8src/u337mg030_ece337_controller_1.0.0/source/controller.sv
 Fsrc/u337mg030_ece337_controller_1.0.0/source/controller.sv
 !i122 12
-L0 3 1277
+L0 3 1294
+R4
 R5
-R6
 r1
 !s85 0
 31
-R7
+R12
 !s107 src/u337mg030_ece337_controller_1.0.0/source/controller.sv|
 !s90 +cover|-sv|-quiet|-work|work|src/u337mg030_ece337_controller_1.0.0/source/controller.sv|
 !i113 0
+R7
 R8
-R9
 R1
 vflex_counter
 R2
@@ -255,22 +255,22 @@ R3
 IO8AUNmzLIJZ>cEff<iT?N0
 S1
 R0
-R4
+R9
 8src/u337mg030_ece337_flex_counter_1.0.0/source/flex_counter.sv
 Fsrc/u337mg030_ece337_flex_counter_1.0.0/source/flex_counter.sv
 !i122 5
 L0 3 42
+R4
 R5
-R6
 r1
 !s85 0
 31
-R11
+R6
 !s107 src/u337mg030_ece337_flex_counter_1.0.0/source/flex_counter.sv|
 !s90 +cover|-sv|-quiet|-work|work|src/u337mg030_ece337_flex_counter_1.0.0/source/flex_counter.sv|
 !i113 0
+R7
 R8
-R9
 R1
 vfull_adder
 R2
@@ -280,47 +280,47 @@ R3
 ImeQG>U47OKP4Gf;S2cz260
 S1
 R0
-R4
+R9
 8src/u337mg030_ece337_full_adder_1.0.0/source/full_adder.sv
 Fsrc/u337mg030_ece337_full_adder_1.0.0/source/full_adder.sv
 !i122 6
 L0 3 8
+R4
 R5
-R6
 r1
 !s85 0
 31
-R7
+R6
 !s107 src/u337mg030_ece337_full_adder_1.0.0/source/full_adder.sv|
 !s90 +cover|-sv|-quiet|-work|work|src/u337mg030_ece337_full_adder_1.0.0/source/full_adder.sv|
 !i113 0
+R7
 R8
-R9
 R1
 vfullInference
 R2
-Z13 !s110 1765367815
+R11
 !i10b 1
 !s100 :0XlLSZo9dzc68kh]zC^z0
 Ioo]j^90aXK5m;PbI44WHN2
 S1
 R0
-w1765366396
+R9
 8src/u337mg030_ece337_fullInference_1.0.0/source/fullInference.sv
 Fsrc/u337mg030_ece337_fullInference_1.0.0/source/fullInference.sv
 !i122 17
 L0 3 91
+R4
 R5
-R6
 r1
 !s85 0
 31
-R7
+R12
 !s107 src/u337mg030_ece337_fullInference_1.0.0/source/fullInference.sv|
 !s90 +cover|-sv|-quiet|-work|work|src/u337mg030_ece337_fullInference_1.0.0/source/fullInference.sv|
 !i113 0
+R7
 R8
-R9
 R1
 nfull@inference
 vmux21
@@ -331,98 +331,98 @@ R3
 IBL6bjKMfXQ@^S5ka41`=e0
 S1
 R0
-R4
+R9
 8src/u337mg030_ece337_mux21_1.0.0/source/mux21.sv
 Fsrc/u337mg030_ece337_mux21_1.0.0/source/mux21.sv
 !i122 7
 L0 3 11
+R4
 R5
-R6
 r1
 !s85 0
 31
-R7
+R6
 !s107 src/u337mg030_ece337_mux21_1.0.0/source/mux21.sv|
 !s90 +cover|-sv|-quiet|-work|work|src/u337mg030_ece337_mux21_1.0.0/source/mux21.sv|
 !i113 0
+R7
 R8
-R9
 R1
 vperipheral
 R2
-R13
+R11
 !i10b 1
 !s100 <^f2i`Y`d88j;]nVbbo[P0
 ICCblf9jYMWlFj[7AOiKZR2
 S1
 R0
-w1765366417
+R9
 8src/u337mg030_ece337_peripheral_1.0.0/source/peripheral.sv
 Fsrc/u337mg030_ece337_peripheral_1.0.0/source/peripheral.sv
 !i122 18
 L0 3 27
+R4
 R5
-R6
 r1
 !s85 0
 31
-Z14 !s108 1765367815.000000
+R12
 !s107 src/u337mg030_ece337_peripheral_1.0.0/source/peripheral.sv|
 !s90 +cover|-sv|-quiet|-work|work|src/u337mg030_ece337_peripheral_1.0.0/source/peripheral.sv|
 !i113 0
+R7
 R8
-R9
 R1
 vprocessingElement
 R2
-R3
+R11
 !i10b 1
 !s100 9io?jkb40U@H;d_=K9_II2
 Ig^GBT2HRddC@1C>eNjH0a2
 S1
 R0
-R4
+R9
 8src/u337mg030_ece337_processingElement_1.0.0/source/processingElement.sv
 Fsrc/u337mg030_ece337_processingElement_1.0.0/source/processingElement.sv
 !i122 14
 L0 8 117
+R4
 R5
-R6
 r1
 !s85 0
 31
-R7
+R12
 !s107 src/u337mg030_ece337_processingElement_1.0.0/source/processingElement.sv|
 !s90 +cover|-sv|-quiet|-work|work|src/u337mg030_ece337_processingElement_1.0.0/source/processingElement.sv|
 !i113 0
+R7
 R8
-R9
 R1
 nprocessing@element
 vsram1024x32_wrapper
 R2
-R10
+R3
 !i10b 1
 !s100 AlKaUdda:;goN[?[7ZFNi3
 ISO^_a906H5F0BhCDV3Jfg3
 S1
 R0
-R12
+R10
 8src/ece337_course-lib_sram1024x32_wrapper_1.0.0/source/sram1024x32_wrapper.sv
 Fsrc/ece337_course-lib_sram1024x32_wrapper_1.0.0/source/sram1024x32_wrapper.sv
 !i122 1
 L0 1 112
+R4
 R5
-R6
 r1
 !s85 0
 31
-R11
+R6
 !s107 src/ece337_course-lib_sram1024x32_wrapper_1.0.0/source/sram1024x32_wrapper.sv|
 !s90 +cover|-sv|-quiet|-work|work|src/ece337_course-lib_sram1024x32_wrapper_1.0.0/source/sram1024x32_wrapper.sv|
 !i113 0
+R7
 R8
-R9
 R1
 vsram_buffer
 R2
@@ -432,120 +432,120 @@ R3
 IdAad3T8ab@Ha57kbgMBTo2
 S1
 R0
-R4
+R9
 8src/u337mg030_ece337_sram_buffer_1.0.0/source/sram_buffer.sv
 Fsrc/u337mg030_ece337_sram_buffer_1.0.0/source/sram_buffer.sv
 !i122 8
 L0 3 138
+R4
 R5
-R6
 r1
 !s85 0
 31
-R7
+R6
 !s107 src/u337mg030_ece337_sram_buffer_1.0.0/source/sram_buffer.sv|
 !s90 +cover|-sv|-quiet|-work|work|src/u337mg030_ece337_sram_buffer_1.0.0/source/sram_buffer.sv|
 !i113 0
+R7
 R8
-R9
 R1
 vsram_controller
 R2
-R3
+R11
 !i10b 1
 !s100 UnfBA0G>9Y9e9]DEnPmk@3
 ITH3e^`WYL@cfe@lZk8iR52
 S1
 R0
-R4
+R9
 8src/u337mg030_ece337_sram_controller_1.0.0/source/sram_controller.sv
 Fsrc/u337mg030_ece337_sram_controller_1.0.0/source/sram_controller.sv
 !i122 15
 L0 3 134
+R4
 R5
-R6
 r1
 !s85 0
 31
-R7
+R12
 !s107 src/u337mg030_ece337_sram_controller_1.0.0/source/sram_controller.sv|
 !s90 +cover|-sv|-quiet|-work|work|src/u337mg030_ece337_sram_controller_1.0.0/source/sram_controller.sv|
 !i113 0
+R7
 R8
-R9
 R1
 vtb_top
 R2
-R13
+R11
 !i10b 1
-!s100 CiFbk>Le3O=7X?c;]ijNg0
-INAY]Z0j2]>U5SOgHmM:UT1
+!s100 V^UR[2FM2SfG]Ud70MlF33
+I@I682kY]X[D<V=4HR`zD@1
 S1
 R0
-w1765367757
+w1765387094
 8src/u337mg030_ece337_top_1.0.0/testbench/tb_top.sv
 Fsrc/u337mg030_ece337_top_1.0.0/testbench/tb_top.sv
 !i122 20
-L0 4 819
+L0 4 1041
+R4
 R5
-R6
 r1
 !s85 0
 31
-R14
+R12
 !s107 src/u337mg030_ece337_top_1.0.0/testbench/tb_top.sv|
 !s90 +cover|-sv|-quiet|-work|work|src/u337mg030_ece337_top_1.0.0/testbench/tb_top.sv|
 !i113 0
+R7
 R8
-R9
 R1
 vtop
 R2
-R13
+R11
 !i10b 1
 !s100 `JmXYNQlSO5HU]Yidnn`K1
 I>m6BBKaRVk]>_OKMi^2QI2
 S1
 R0
-w1765366564
+R9
 8src/u337mg030_ece337_top_1.0.0/source/top.sv
 Fsrc/u337mg030_ece337_top_1.0.0/source/top.sv
 !i122 19
 L0 3 49
+R4
 R5
-R6
 r1
 !s85 0
 31
-R14
+R12
 !s107 src/u337mg030_ece337_top_1.0.0/source/top.sv|
 !s90 +cover|-sv|-quiet|-work|work|src/u337mg030_ece337_top_1.0.0/source/top.sv|
 !i113 0
+R7
 R8
-R9
 R1
 vweight_counter
 R2
-R3
+R11
 !i10b 1
 !s100 ZG5eGm3hC::_OZ>ZnITBd1
 I]c_PIUFDOo[;>f]G0lP[I1
 S1
 R0
-w1765366373
+R9
 8src/u337mg030_ece337_weight_counter_1.0.0/source/weight_counter.sv
 Fsrc/u337mg030_ece337_weight_counter_1.0.0/source/weight_counter.sv
 !i122 13
 L0 3 83
+R4
 R5
-R6
 r1
 !s85 0
 31
-R7
+R12
 !s107 src/u337mg030_ece337_weight_counter_1.0.0/source/weight_counter.sv|
 !s90 +cover|-sv|-quiet|-work|work|src/u337mg030_ece337_weight_counter_1.0.0/source/weight_counter.sv|
 !i113 0
+R7
 R8
-R9
 R1
