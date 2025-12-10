@@ -110,10 +110,10 @@ module AHB_CDL (
     always_ff @(posedge clk, negedge n_rst) begin
         if(!n_rst) begin
             weight_reg <= 64'd0;
-            input_reg <= '0;
-            bias_reg <= '0;
-            control_reg <= 8'd0;
-            act_control_reg <= 8'd0;
+            input_reg <= 64'd0;
+            bias_reg <= 64'd0;
+            control_reg <= 64'd0;
+            act_control_reg <= 64'd0;
         end
         else begin
             weight_reg <= weight;
@@ -138,7 +138,7 @@ module AHB_CDL (
             burst_beats_reg       <= 10'd0;
         end
         else begin
-            burst_active_reg      <= hburst;
+            burst_active_reg      <= burst_active;
             burst_type_reg        <= burst_type_next;
             burst_addr_reg        <= burst_addr_next;
             burst_base_addr_reg   <= burst_base_addr_next;
@@ -190,7 +190,7 @@ module AHB_CDL (
 
 
             // if in slave, in first burst and not a single transfer
-                if(hsel_reg && htrans_reg == 2'b10) begin // do we want to use current hburst? // first beat of a burst or ind. transfer
+                if(hsel_reg && htrans_reg == 2'b10 && hready) begin // do we want to use current hburst? // first beat of a burst or ind. transfer
                     burst_active        = 1'b1;
                     burst_type_next     = hburst_reg; // captures the burst type
                     burst_beats_next    = 1; // reset beat counter
@@ -247,6 +247,7 @@ module AHB_CDL (
         end
     end
 
+    // effective haddr
     always_comb begin
         if(hburst_reg != 3'd0) begin
             effective_addr = burst_addr_reg;
@@ -288,12 +289,12 @@ module AHB_CDL (
     always_comb begin
         stall_active = 1'b0;
 
-        if(controller_busy) stall_active = 1'b1;
-        else if(weight_done || input_done) stall_active = 1'b1;
-        else if(buffer_error) stall_active = 1'b1;
-        else begin
-            if((effective_addr == 10'h018 || effective_addr == 10'h019) && ~data_ready && ~hwrite) stall_active = 1'b1;
-        end
+        // if(controller_busy) stall_active = 1'b1;
+        // if(weight_done || input_done) stall_active = 1'b1;
+        if(buffer_error) stall_active = 1'b1;
+        // else begin
+        //     if((effective_addr == 10'h018 || effective_addr == 10'h019) && ~data_ready && ~hwrite) stall_active = 1'b1;
+        // end
     end
     
     ///----------------------------------------------------------
@@ -304,11 +305,11 @@ module AHB_CDL (
         error_detected_now  = 1'b0; 
         
         if(hsel && (htrans == 2'b10 || htrans == 2'b11 || burst_active_reg) && hwrite && ~stall_active) begin
-            if(haddr == 10'h018 || haddr == 10'h019 ||
+            if(haddr == 10'h018 || haddr == 10'h019 || haddr == 10'h01A || haddr == 10'h01B || haddr == 10'h01C || haddr == 10'h01D || haddr == 10'h01D ||haddr == 10'h01E || haddr == 10'h01F ||   
                 haddr == 10'h020 || haddr == 10'h021 || haddr == 10'h023)  error_detected_now = 1'b1;
         end
 
-        if(hsel && (htrans == 2'b10 || htrans == 2'b11 || burst_active_reg) && ~hwrite) begin
+        if(hsel && (htrans == 2'b10 || htrans == 2'b11 || burst_active_reg) && ~hwrite && ~stall_active) begin
             if (~(haddr >= 10'h010 && haddr <= 10'h024)) begin
                 error_detected_now = 1'b1;
             end
@@ -329,14 +330,14 @@ module AHB_CDL (
         end
     end
 
-    logic error_here;
-    assign error_here = clear_error;
+    logic clear_here;
+    assign clear_here = clear_error;
     // hresp && hready next state logic
     always_comb begin
         next_state = current_state;
         error_flag_next = error_flag_reg;
 
-        if(error_here) error_flag_next = 1'b0;
+        if(clear_here) error_flag_next = 1'b0;
         else error_flag_next = error_flag_reg;
 
         case (current_state)
@@ -395,7 +396,7 @@ module AHB_CDL (
         weight = weight_reg; 
         weight_write_en = 1'b0;
 
-        if((hwrite_reg && hsel_reg && (htrans_reg == 2'b10 || htrans_reg == 2'b11 || burst_active_reg)) && ~weight_done && ~stall_active) begin
+        if((hwrite_reg && hsel_reg && (htrans_reg == 2'b10 || htrans_reg == 2'b11 || burst_active_reg)) && ~weight_done && ~controller_busy && hready) begin
             case(effective_addr)
                 10'h000:begin
                     weight_write_en = 1'b1;
@@ -498,7 +499,7 @@ module AHB_CDL (
         input_data = input_reg; 
         input_write_en = 1'b0;
 
-        if((hwrite_reg && hsel_reg && (htrans_reg == 2'b10 || htrans_reg == 2'b11 || burst_active_reg)) && ~input_done && ~stall_active) begin
+        if((hwrite_reg && hsel_reg && (htrans_reg == 2'b10 || htrans_reg == 2'b11 || burst_active_reg)) && ~input_done && ~controller_busy && hready) begin
             case(effective_addr)
                 10'h008:begin
                     input_write_en = 1'b1;
@@ -528,6 +529,72 @@ module AHB_CDL (
                         input_data = {input_data[63:16], hwdata[7:0], input_data[7:0]}; 
                     end
                 end
+                10'h00A: begin
+                    input_write_en = 1'b1;
+                    if (hsize_reg == 3'd3) input_data = hwdata; 
+                    else if(hsize_reg == 3'd2) begin
+                        input_data = {input_data[63:48], hwdata[31:0], input_data[15:0]};
+                    end 
+                    else if(hsize_reg == 3'd1) begin
+                        input_data = {input_data[63:32], hwdata[15:0], input_data[15:0]};
+                    end
+                    else begin
+                        input_data = {input_data[63:24], hwdata[7:0], input_data[15:0]};
+                    end
+                end
+                10'h00B: begin
+                    input_write_en = 1'b1;
+                    if (hsize_reg == 3'd3) input_data = hwdata;
+                    else if(hsize_reg == 3'd2)  begin
+                        input_data = {input_data[63:56], hwdata[31:0], input_data[23:0]};
+                    end 
+                    else if(hsize_reg == 3'd1) begin
+                        input_data = {input_data[63:40], hwdata[15:0], input_data[23:0]}; 
+                    end
+                    else begin
+                        input_data = {input_data[63:32], hwdata[7:0], input_data[23:0]}; 
+                    end
+                end
+                10'h00C:begin
+                    input_write_en = 1'b1;
+                    if (hsize_reg == 3'd3) input_data = hwdata;
+                    else if(hsize_reg == 3'd2) begin
+                        input_data = {hwdata[31:0], input_data[31:0]};       
+                    end 
+                    else if(hsize_reg == 3'd1) begin
+                        input_data = {input_data[63:48], hwdata[15:0], input_data[31:0]};
+                    end
+                    else begin
+                        input_data = {input_data[63:40], hwdata[7:0], input_data[31:0]}; 
+                    end
+                end
+                10'h00D:begin
+                    input_write_en = 1'b1;
+                    if (hsize_reg == 3'd3) input_data = hwdata;
+                    else if (hsize_reg == 3'd2)  input_data = {hwdata[31:0], input_data[31:0]};               // 4B @ bytes[6:3] (overlap case handled by steering)
+                    else if (hsize_reg == 3'd1)  input_data = {input_data[63:56], hwdata[15:0], input_data[39:0]}; 
+                    else begin
+                        input_data = {input_data[63:48], hwdata[7:0], input_data[39:0]};
+                    end
+                end
+                10'h00E:begin
+                    input_write_en = 1'b1;
+                    if (hsize_reg == 3'd3) input_data = hwdata;
+                    else if (hsize_reg == 3'd2)  input_data = {hwdata[31:0], input_data[31:0]};
+                    else if(hsize_reg == 3'd1) begin
+                        input_data = {hwdata[15:0],input_data[47:0]};
+                    end
+                    else begin
+                        input_data = {input_data[63:56], hwdata[7:0],input_data[47:0]};
+                    end
+                end
+                10'h00F:begin 
+                    input_write_en = 1'b1;
+                    if (hsize_reg == 3'd3) input_data = hwdata;
+                    else if(hsize_reg == 3'd2) input_data = {hwdata[31:0], input_data[31:0]};   
+                    else if(hsize_reg == 3'd1)  input_data = {hwdata[15:0], input_data[47:0]};  
+                    else input_data = {hwdata[7:0], input_data[55:0]};
+                end
                 default: begin 
                     input_data = input_reg;
                     input_write_en = 1'b0;
@@ -540,7 +607,7 @@ module AHB_CDL (
     always_comb begin
         bias = bias_reg; 
 
-        if((hwrite_reg && hsel_reg && (htrans_reg == 2'b10 || htrans_reg == 2'b11 || burst_active_reg)) && ~stall_active) begin
+        if((hwrite_reg && hsel_reg && (htrans_reg == 2'b10 || htrans_reg == 2'b11 || burst_active_reg)) && hready) begin
             case(effective_addr)
                 10'h010:begin
                     if(hsize_reg == 3'd3) bias = hwdata;
@@ -628,7 +695,7 @@ module AHB_CDL (
         control = control_reg; 
         act_control = act_control_reg;
 
-        if((hwrite_reg && hsel_reg && (htrans_reg == 2'b10 || htrans_reg == 2'b11 || burst_active_reg)) && ~stall_active) begin
+        if((hwrite_reg && hsel_reg && (htrans_reg == 2'b10 || htrans_reg == 2'b11 || burst_active_reg)) && hready) begin
             case(effective_addr)
                 10'h022:begin
                    if(hsize_reg == 3'd3) begin 
@@ -692,7 +759,7 @@ module AHB_CDL (
     always_comb begin
         store_hrdata = 64'd0; 
 
-        if((~hwrite_reg && hsel_reg && (htrans_reg == 2'b10 || htrans_reg == 2'b11 || burst_active_reg))) begin
+        if((~hwrite_reg && hsel_reg && (htrans_reg == 2'b10 || htrans_reg == 2'b11 || burst_active_reg) && hready)) begin
             if(raw_hazard) begin
                 if(hsize_reg == 3'd3 && hsize == 3'd3) begin 
                     store_hrdata = hwdata; // only testcase tb tests for
@@ -934,6 +1001,78 @@ module AHB_CDL (
                             else begin
                                 store_hrdata = {48'd0, output_reg[15:8], 8'd0};
                             end
+                    end
+                    10'h01A: begin
+                        if(hsize_reg == 3'd3) store_hrdata = output_reg;
+                        else if(hsize_reg == 3'd2)  begin
+                            store_hrdata = {16'd0, output_reg[47:16], 16'd0};
+                        end 
+                        else if(hsize_reg == 3'd1) begin
+                            store_hrdata = {32'd0, output_reg[31:16], 16'd0};
+                        end
+                        else begin
+                            store_hrdata = {40'd0, output_reg[23:16], 16'd0};
+                        end
+                    end
+                    10'h01B: begin
+                        if(hsize_reg == 3'd3) store_hrdata = output_reg;
+                        else if(hsize_reg == 3'd2)  begin
+                            store_hrdata = {8'd0, output_reg[55:24], 24'd0};
+                        end 
+                        else if(hsize_reg == 3'd1) begin
+                            store_hrdata = {24'd0, output_reg[39:24], 24'd0};
+                        end
+                        else begin
+                            store_hrdata = {32'd0, output_reg[31:24], 24'd0};
+                        end
+                    end
+                    10'h01C:begin
+                        if(hsize_reg == 3'd3) store_hrdata = output_reg;
+                        else if(hsize_reg == 3'd2)  begin
+                            store_hrdata = {output_reg[63:32], 32'd0};
+                        end 
+                        else if(hsize_reg == 3'd1) begin
+                            store_hrdata = {16'd0, output_reg[47:32], 32'd0};
+                        end
+                        else begin
+                            store_hrdata = {24'd0, output_reg[39:32], 32'd0};
+                        end
+                    end
+                    10'h01D:begin
+                        if(hsize_reg == 3'd3) store_hrdata = output_reg;
+                        else if(hsize_reg == 3'd2)  begin
+                            store_hrdata = {output_reg[63:32], 32'd0};
+                        end 
+                        else if(hsize_reg == 3'd1) begin
+                            store_hrdata = {7'd0, output_reg[55:40], 40'd0};
+                        end
+                        else begin
+                            store_hrdata = {15'd0, output_reg[47:40], 40'd0};
+                        end
+                    end
+                    10'h01E:begin
+                        if(hsize_reg == 3'd3) store_hrdata = output_reg;
+                        else if(hsize_reg == 3'd2)  begin
+                            store_hrdata = {output_reg[63:32], 32'd0};
+                        end 
+                        else if(hsize_reg == 3'd1) begin
+                            store_hrdata = {output_reg[63:48], 48'd0};
+                        end
+                        else begin
+                            store_hrdata = {8'd0, output_reg[55:48], 48'd0};
+                        end
+                    end
+                    10'h01F:begin
+                        if(hsize_reg == 3'd3) store_hrdata = output_reg;
+                        else if(hsize_reg == 3'd2)  begin
+                            store_hrdata = {output_reg[63:32], 32'd0};
+                        end 
+                        else if(hsize_reg == 3'd1) begin
+                            store_hrdata = {output_reg[63:48], 48'd0};
+                        end
+                        else begin
+                            store_hrdata = {output_reg[63:56], 56'd0};
+                        end
                     end
                     10'h020:begin
                         if(hsize_reg == 3'd3) begin
