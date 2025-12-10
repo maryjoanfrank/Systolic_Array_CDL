@@ -671,7 +671,7 @@ module tb_AHB_CDL ();
         RAW(10'h017, 2'd1, 64'd36028797019000000);
 
         // Example Burst Setup - Dynamic Array Required
-        testcase = "BURST Write weight register at addr 4'h000";
+        testcase = "BURST Write weight register at addr 4'h008 by  ";
         n_rst = 1;
         controller_busy = 1'b0;
         data_ready = 1'b0;
@@ -684,10 +684,10 @@ module tb_AHB_CDL ();
         @(negedge clk);
         reset_done = "Here 12";
 
-        data = new [8];
+        data = new [4];
         // data = {64'h8888_8888_8888, 64'h7777_7777_7777,64'h6666_6666_6666,64'h5555_5555_5555,64'h4444_4444_4444,64'h3333_3333_3333,64'h2222_2222_2222,64'h1111_1111_1111};
         data = {64'h8888_8888_8888, 64'h7777_7777_7777,64'h6666_6666_6666,64'h5555_5555_5555};
-        enqueue_burst_write(10'h000, 2'd3, 3'd2, data); // 32 bits 
+        enqueue_burst_write(10'h008, 2'd3, 3'd2, data); // 32 bits 
         execute_transactions(4); // Burst counts as 8 transactions for 8 beats
         finish_transactions();
 
@@ -996,7 +996,7 @@ module tb_AHB_CDL ();
         @(negedge clk);
         reset_done = "Here 18";
 
-        weight_done = 1'b1;
+        buffer_error = 1'b1;
 
         enqueue_write(10'h024, 2'd3, 64'd3);
         execute_transactions(1);
@@ -1004,7 +1004,7 @@ module tb_AHB_CDL ();
         execute_transactions(1);
 
 
-        weight_done = 1'b0;
+        buffer_error = 1'b0;
         enqueue_write(10'h024, 2'd3, 64'd3);
         execute_transactions(1);
         enqueue_read(10'h024, 2'd3, 64'd0);
