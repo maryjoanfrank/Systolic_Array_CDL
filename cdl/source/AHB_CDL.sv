@@ -756,6 +756,17 @@ module AHB_CDL (
         sh2 = ({4'b0, haddr[1:0]} << 3);
     end
 
+    // old memory
+    logic [63:0] old_mem_data;
+    always_comb begin
+        case (haddr_reg)
+            10'h010, 10'h011, 10'h012, 10'h013, 10'h014, 10'h015, 10'h016, 10'h17: old_mem_data = bias_reg;
+            10'h022: old_mem_data = control_reg;
+            10'h024: old_mem_data = act_control_reg;
+            default: old_mem_data = 64'd0; // 0x0 and 0x2 are read-only
+        endcase
+    end
+
     always_comb begin
         store_hrdata = 64'd0; 
 
@@ -792,7 +803,7 @@ module AHB_CDL (
                 end
                 else if (hsize_reg == 3'd2 && hsize == 3'd3) begin
                     // store_hrdata = {32'd0, hwdata[31:0]};
-                    if(haddr_reg[2] == 1'b0) store_hrdata = {weight_reg[63:32], hwdata[31:0]};
+                    if(haddr_reg[2] == 1'b0) store_hrdata = {old_mem_data[63:32], hwdata[31:0]};
                     else store_hrdata = {hwdata[63:32], weight_reg[31:0]};
                 end
                 else if (hsize_reg == 3'd2 && hsize == 3'd2) begin   // should I use memory or clear it?
@@ -801,8 +812,8 @@ module AHB_CDL (
                         else store_hrdata = {hwdata[63:32], 32'd0};
                     end
                     else begin
-                        if(haddr[2] == 1'b0) store_hrdata = {32'd0, weight_reg[31:0]};
-                        else store_hrdata = {weight_reg[63:32], 32'd0};
+                        if(haddr[2] == 1'b0) store_hrdata = {32'd0, old_mem_data[31:0]};
+                        else store_hrdata = {old_mem_data[63:32], 32'd0};
                     end
                 end
                 else if (hsize_reg == 3'd2 && hsize == 3'd1) begin
@@ -810,14 +821,14 @@ module AHB_CDL (
                             case(haddr[2:1])
                                 2'b00: store_hrdata = {48'd0, hwdata[15:0]};
                                 2'b01: store_hrdata = {32'd0, hwdata[31:16], 16'd0};
-                                default: store_hrdata = {16'd0, weight_reg[47:32], 32'd0};
+                                default: store_hrdata = {16'd0, old_mem_data[47:32], 32'd0};
                             endcase
                         end
                     else begin
                         case(haddr[2:1])
                             2'b10: store_hrdata = {16'd0, hwdata[47:32], 32'd0};
                             2'b11: store_hrdata = {hwdata[63:48], 48'd0};
-                            default: store_hrdata = {48'd0, weight_reg[15:0]};
+                            default: store_hrdata = {48'd0, old_mem_data[15:0]};
                         endcase
                     end
                 end
@@ -826,24 +837,24 @@ module AHB_CDL (
                 end
             else if (hsize_reg == 3'd1 && hsize == 3'd3) begin
                 case(haddr_reg[2:1])
-                    2'b00: store_hrdata = {weight_reg[63:16], hwdata[15:0]};
-                    2'b01: store_hrdata = {weight_reg[63:32], hwdata[31:16], weight_reg[15:0]};
-                    2'b10: store_hrdata = {weight_reg[63:48], hwdata[47:32], weight_reg[31:0]};
-                    2'b11: store_hrdata = {hwdata[63:48], weight_reg[47:0]};
+                    2'b00: store_hrdata = {old_mem_data[63:16], hwdata[15:0]};
+                    2'b01: store_hrdata = {old_mem_data[63:32], hwdata[31:16], old_mem_data[15:0]};
+                    2'b10: store_hrdata = {old_mem_data[63:48], hwdata[47:32], old_mem_data[31:0]};
+                    2'b11: store_hrdata = {hwdata[63:48], old_mem_data[47:0]};
                 endcase
             end
             else if (hsize_reg == 3'd1 && hsize == 3'd2) begin
                 if(haddr_reg[2] == 1'b0 && haddr[2] == 1'b0) begin // read and wrote into lower 4 bytes
-                    if(haddr_reg[1] == 1'b0) store_hrdata = {32'd0, weight_reg[31:16], hwdata[15:0]};
-                    else store_hrdata = {32'd0, hwdata[31:16], weight_reg[15:0]};
+                    if(haddr_reg[1] == 1'b0) store_hrdata = {32'd0, old_mem_data[31:16], hwdata[15:0]};
+                    else store_hrdata = {32'd0, hwdata[31:16], old_mem_data[15:0]};
                 end
                 else if(haddr_reg[2] == 1'b1 && haddr[2] == 1'b1) begin
-                    if(haddr_reg[1] == 1'b0) store_hrdata = {weight_reg[63:48], hwdata[47:32], 32'd0};
-                    else store_hrdata = {hwdata[63:48], weight_reg[47:32], 32'd0};
+                    if(haddr_reg[1] == 1'b0) store_hrdata = {old_mem_data[63:48], hwdata[47:32], 32'd0};
+                    else store_hrdata = {hwdata[63:48], old_mem_data[47:32], 32'd0};
                 end
                 else begin
-                    if(haddr[2] == 1'b0) store_hrdata = {32'd0, weight_reg[31:0]};
-                    else store_hrdata = {weight_reg[63:32], 32'd0};
+                    if(haddr[2] == 1'b0) store_hrdata = {32'd0, old_mem_data[31:0]};
+                    else store_hrdata = {old_mem_data[63:32], 32'd0};
                 end
             end
             else if (hsize_reg == 3'd1 && hsize == 3'd1) begin
@@ -857,10 +868,10 @@ module AHB_CDL (
                 end
                 else begin
                     case(haddr[2:1])
-                        2'b00: store_hrdata = {48'd0, weight_reg[15:0]};
-                        2'b01: store_hrdata = {32'd0, weight_reg[31:16], 16'd0};
-                        2'b10: store_hrdata = {16'd0, weight_reg[47:32], 32'd0};
-                        2'b11: store_hrdata = {weight_reg[63:48], 48'd0};
+                        2'b00: store_hrdata = {48'd0, old_mem_data[15:0]};
+                        2'b01: store_hrdata = {32'd0, old_mem_data[31:16], 16'd0};
+                        2'b10: store_hrdata = {16'd0, old_mem_data[47:32], 32'd0};
+                        2'b11: store_hrdata = {old_mem_data[63:48], 48'd0};
                     endcase
                 end
             end
@@ -869,14 +880,14 @@ module AHB_CDL (
             end
             else if (hsize_reg == 3'd0 && hsize == 3'd3) begin
                 case(haddr_reg[2:0])
-                    3'd0: store_hrdata = {weight_reg[63:8], hwdata[7:0]};
-                    3'd1: store_hrdata = {weight_reg[63:16], hwdata[15:8], weight_reg[7:0]};
-                    3'd2: store_hrdata = {weight_reg[63:24], hwdata[23:16], weight_reg[15:0]};
-                    3'd3: store_hrdata = {weight_reg[63:32], hwdata[31:24], weight_reg[23:0]};
-                    3'd4: store_hrdata = {weight_reg[63:40], hwdata[39:32], weight_reg[31:0]};
-                    3'd5: store_hrdata = {weight_reg[63:48], hwdata[47:40], weight_reg[39:0]};
-                    3'd6: store_hrdata = {weight_reg[63:56], hwdata[55:48], weight_reg[47:0]};
-                    3'd7: store_hrdata = {hwdata[63:56], weight_reg[55:0]};
+                    3'd0: store_hrdata = {old_mem_data[63:8], hwdata[7:0]};
+                    3'd1: store_hrdata = {old_mem_data[63:16], hwdata[15:8], old_mem_data[7:0]};
+                    3'd2: store_hrdata = {old_mem_data[63:24], hwdata[23:16], old_mem_data[15:0]};
+                    3'd3: store_hrdata = {old_mem_data[63:32], hwdata[31:24], old_mem_data[23:0]};
+                    3'd4: store_hrdata = {old_mem_data[63:40], hwdata[39:32], old_mem_data[31:0]};
+                    3'd5: store_hrdata = {old_mem_data[63:48], hwdata[47:40], old_mem_data[39:0]};
+                    3'd6: store_hrdata = {old_mem_data[63:56], hwdata[55:48], old_mem_data[47:0]};
+                    3'd7: store_hrdata = {hwdata[63:56], old_mem_data[55:0]};
                 endcase
             end
             else if (hsize_reg == 3'd0 && hsize == 3'd2) begin
@@ -892,11 +903,11 @@ module AHB_CDL (
                     else store_hrdata = {48'd0, hwdata[15:8], 8'd0};
                 end
                 else begin
-                    if(haddr[0] == 1'b0) store_hrdata = {56'd0, weight_reg[7:0]};
-                    else store_hrdata = {48'd0, weight_reg[15:8], 8'd0};
+                    if(haddr[0] == 1'b0) store_hrdata = {56'd0, old_mem_data[7:0]};
+                    else store_hrdata = {48'd0, old_mem_data[15:8], 8'd0};
                 end
             end
-            else store_hrdata = weight_reg;
+            else store_hrdata = old_mem_data;
             end
             else begin
                 case(effective_addr)
