@@ -39,7 +39,9 @@ module AHB_CDL (
     logic [63:0] weight_reg;
     logic [63:0] input_reg;
     logic [63:0] bias_reg;
-
+    // latch to remember that weights have been loaded; cleared when data_ready asserted
+    logic weight_done_latched;
+    logic load_weights_latched;
     logic [63:0] control_reg, control;
     logic [63:0] act_control_reg, act_control; 
     logic [1:0]controller_reg;
@@ -114,6 +116,8 @@ module AHB_CDL (
             bias_reg <= 64'd0;
             control_reg <= 64'd0;
             act_control_reg <= 64'd0;
+            weight_done_latched <= 1'b0;
+            load_weights_latched <= 1'b0;
         end
         else begin
             weight_reg <= weight;
@@ -121,6 +125,26 @@ module AHB_CDL (
             bias_reg <= bias;
             control_reg <= control;
             act_control_reg <= act_control;
+        end
+    end
+
+    // latch weight_done and load_weights until data_ready clears them
+    // logic load_weights_latched;
+    always_ff @(posedge clk, negedge n_rst) begin
+        if(!n_rst) begin
+            weight_done_latched <= 1'b0;
+            load_weights_latched <= 1'b0;
+        end else begin
+            if (data_ready) begin
+                weight_done_latched <= 1'b0;
+                load_weights_latched <= 1'b0;
+            end else begin
+                if (weight_done) weight_done_latched <= 1'b1;
+                else weight_done_latched <= weight_done_latched;
+
+                if (load_weights) load_weights_latched <= 1'b1;
+                else load_weights_latched <= load_weights_latched;
+            end
         end
     end
 
@@ -148,6 +172,18 @@ module AHB_CDL (
 
     // bursting comb
     always_comb begin
+    burst_addr_next = 10'd0;
+    burst_active = 1'd0;
+    burst_beats_next = 10'd0;
+    burst_type_next = 3'd0;
+    beat_shift = 3'd0;
+    burst_increment = 10'b0;
+    wrap_align_mask = 10'd0;
+    align_mask = 10'd0;
+    wrap_mask = 10'd0;
+    burst_base_addr_next = 10'd0;
+    boundary = 10'd0;
+
         if((stall_active == 1'b0) ) begin
             burst_active        = burst_active_reg; // there's a burst
             burst_type_next     = burst_type_reg; // what's teh burst type? (INCR/WRAP)
@@ -396,7 +432,8 @@ module AHB_CDL (
         weight = weight_reg; 
         weight_write_en = 1'b0;
 
-        if((hwrite_reg && hsel_reg && (htrans_reg == 2'b10 || htrans_reg == 2'b11 || burst_active_reg)) && ~weight_done && ~controller_busy && hready) begin
+//made a change here
+        if((hwrite_reg && hsel_reg && (htrans_reg == 2'b10 || htrans_reg == 2'b11 || burst_active_reg)) && ~weight_done_latched && ~load_weights_latched && ~controller_busy && hready) begin
             case(effective_addr)
                 10'h000:begin
                     weight_write_en = 1'b1;

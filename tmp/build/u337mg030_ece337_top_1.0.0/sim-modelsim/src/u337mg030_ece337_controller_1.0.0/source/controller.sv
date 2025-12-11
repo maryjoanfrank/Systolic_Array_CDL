@@ -121,7 +121,7 @@ end
             FETCH_WEIGHT0: begin
                 if(load_weights_en) 
                 next_state = FETCH_WEIGHT1;
-                else if (load_weights) 
+                else if ((load_weights) ||(load_weights && load_weights_en)) 
                 next_state = ERR;
                 else
                 next_state = WAIT_WEIGHT0;
@@ -130,6 +130,8 @@ end
             WAIT_WEIGHT0: begin
                 if (load_weights_en) begin
                     next_state = FETCH_WEIGHT1;
+                end else if ((load_weights) ||(load_weights && load_weights_en))begin
+                    next_state = ERR;
                 end else begin
                     next_state = WAIT_WEIGHT0;
                 end
@@ -138,7 +140,7 @@ end
             FETCH_WEIGHT1: begin
                 if(load_weights_en) 
                 next_state = FETCH_WEIGHT2;
-                else if (load_weights) 
+                else if ((load_weights) ||(load_weights && load_weights_en)) 
                 next_state = ERR;
                 else
                 next_state = WAIT_WEIGHT1;
@@ -147,6 +149,8 @@ end
             WAIT_WEIGHT1: begin
                 if (load_weights_en) begin
                     next_state = FETCH_WEIGHT2;
+                end else if ((load_weights) ||(load_weights && load_weights_en))begin
+                    next_state = ERR;
                 end else begin
                     next_state = WAIT_WEIGHT1;
                 end
@@ -155,7 +159,7 @@ end
             FETCH_WEIGHT2: begin
                 if(load_weights_en) 
                 next_state = FETCH_WEIGHT3;
-                else if (load_weights) 
+                else if ((load_weights) ||(load_weights && load_weights_en))  
                 next_state = ERR;
                 else
                 next_state = WAIT_WEIGHT2;
@@ -164,6 +168,8 @@ end
             WAIT_WEIGHT2: begin
                 if (load_weights_en) begin
                     next_state = FETCH_WEIGHT3;
+                end else if ((load_weights) ||(load_weights && load_weights_en))begin
+                    next_state = ERR;
                 end else begin
                     next_state = WAIT_WEIGHT2;
                 end
@@ -172,7 +178,7 @@ end
             FETCH_WEIGHT3: begin
                 if(load_weights_en) 
                 next_state = FETCH_WEIGHT4;
-                else if (load_weights) 
+                else if ((load_weights) ||(load_weights && load_weights_en))  
                 next_state = ERR;
                 else
                 next_state = WAIT_WEIGHT3;
@@ -181,6 +187,8 @@ end
             WAIT_WEIGHT3: begin
                 if (load_weights_en) begin
                     next_state = FETCH_WEIGHT4;
+                end else if ((load_weights) ||(load_weights && load_weights_en))begin
+                    next_state = ERR;
                 end else begin
                     next_state = WAIT_WEIGHT3;
                 end
@@ -189,7 +197,7 @@ end
             FETCH_WEIGHT4: begin
                 if(load_weights_en) 
                 next_state = FETCH_WEIGHT5;
-                else if (load_weights) 
+                else if ((load_weights) ||(load_weights && load_weights_en))  
                 next_state = ERR;
                 else
                 next_state = WAIT_WEIGHT4;
@@ -198,6 +206,8 @@ end
             WAIT_WEIGHT4: begin
                 if (load_weights_en) begin
                     next_state = FETCH_WEIGHT5;
+                end else if ((load_weights) ||(load_weights && load_weights_en))begin
+                    next_state = ERR;
                 end else begin
                     next_state = WAIT_WEIGHT4;
                 end
@@ -206,7 +216,7 @@ end
             FETCH_WEIGHT5: begin
                 if(load_weights_en) 
                 next_state = FETCH_WEIGHT6;
-                else if (load_weights) 
+                else if ((load_weights) ||(load_weights && load_weights_en))  
                 next_state = ERR;
                 else
                 next_state = WAIT_WEIGHT5;
@@ -215,6 +225,8 @@ end
             WAIT_WEIGHT5: begin
                 if (load_weights_en) begin
                     next_state = FETCH_WEIGHT6;
+                end else if ((load_weights) ||(load_weights && load_weights_en))begin
+                    next_state = ERR;
                 end else begin
                     next_state = WAIT_WEIGHT5;
                 end
@@ -223,7 +235,7 @@ end
             FETCH_WEIGHT6: begin
                 if(load_weights_en) 
                 next_state = FETCH_WEIGHT7;
-                else if (load_weights) 
+                else if ((load_weights) ||(load_weights && load_weights_en)) 
                 next_state = ERR;
                 else
                 next_state = WAIT_WEIGHT6;
@@ -232,6 +244,8 @@ end
             WAIT_WEIGHT6: begin
                 if (load_weights_en) begin
                     next_state = FETCH_WEIGHT7;
+                end else if ((load_weights) ||(load_weights && load_weights_en))begin
+                    next_state = ERR;
                 end else begin
                     next_state = WAIT_WEIGHT6;
                 end
@@ -240,7 +254,7 @@ end
             FETCH_WEIGHT7: begin
                 if(load_weights) 
                     next_state = READ_WEIGHT0;
-                else if (load_weights) 
+                else if ((load_weights) ||(load_weights && load_weights_en))  
                 next_state = ERR;
                 else
                     next_state = WAIT_WEIGHT7;
@@ -248,6 +262,8 @@ end
             WAIT_WEIGHT7: begin
                 if (load_weights) begin
                     next_state = READ_WEIGHT0;
+                end else if ((load_weights) ||(load_weights && load_weights_en))begin
+                    next_state = ERR;
                 end else begin
                     next_state = WAIT_WEIGHT7;
                 end
@@ -1215,7 +1231,7 @@ enable = 0;
                 {cs7, cs6, cs5, cs4, cs3, cs2, cs1, cs0} = 8'b00100000;  
 
                 controller_busy = 0;
-                start_array =1;
+                // start_array =1;
                 output_reg[63:0] = read_data0[63:0];
                 data_ready = 1;
                              
@@ -1224,7 +1240,7 @@ enable = 0;
                 r_trigger[6]=1;
                 addr[9:0] = SRAM_ACTIVATION_BASE + 10'h0;
                 {cs7, cs6, cs5, cs4, cs3, cs2, cs1, cs0} = 8'b01000000;   
-
+                data_ready = 1;
                 controller_busy = 0;
                 output_reg[63:0] = read_data1[63:0];
                             
@@ -1234,7 +1250,7 @@ enable = 0;
                 r_trigger[7]=1;
                 addr[9:0] = SRAM_ACTIVATION_BASE + 10'h0;
                 {cs7, cs6, cs5, cs4, cs3, cs2, cs1, cs0} = 8'b10000000; 
-
+                data_ready = 1;
                 controller_busy = 0;
                 output_reg[63:0] = read_data2[63:0];
                               
@@ -1242,20 +1258,20 @@ enable = 0;
             WAIT_ACTIVATION8: begin
                 controller_busy = 0;
                 output_reg[63:0] = read_data3[63:0];
-            
+                data_ready = 1;
             end
             WAIT_ACTIVATION9: begin
                 controller_busy = 0;
                 output_reg[63:0] = read_data4[63:0];
-            
+                data_ready = 1;
             end
             WAIT_ACTIVATION10: begin
-            
+                data_ready = 1;
                 controller_busy = 0;
                 output_reg[63:0] = read_data5[63:0];
             end
             WAIT_ACTIVATION11: begin
-                
+                data_ready = 1;
                 controller_busy = 0;
                 output_reg[63:0] = read_data6[63:0];
                 
@@ -1263,6 +1279,7 @@ enable = 0;
             WAIT_ACTIVATION12: begin
                 controller_busy = 0;
                 output_reg[63:0] = read_data7[63:0];
+                data_ready = 1;
             end
             ERR: begin
                 occupancy_err = 1'b1;

@@ -226,598 +226,788 @@ module tb_top ();
     // AHB_CDL DUT (.clk(clk), .n_rst(n_rst), .hsel(hsel), .haddr(haddr), .htrans(htrans), 
     //             .hsize(hsize), .hwrite(hwrite), .hwdata(hwdata), .hburst(hburst),.hready(hready),
     //             .hrdata(hrdata), .hresp(hresp), 
-
     //             .controller_busy(controller_busy), .data_ready(data_ready), .output_reg(output_reg), //inputs
     //             .buffer_error(buffer_error), .weight_done(weight_done), .input_done(input_done), //inputs
     //             .input_data(input_data), .weight(weight), .weight_write_en(weight_write_en),  //outputs
     //             .input_write_en(input_write_en), .start_inference(start_inference), .load_weights(load_weights), //outputs
     //             .activation_mode(activation_mode), .bias(bias)); // outputs
-
+    
     top dut (.*);
     string testcase;
     // string reset_done;
     initial begin
-         /****** EXAMPLE CODE ******/
-        // Always put data LSB-aligned. The model will automagically move bytes to their proper position.
-        // enqueue_read(3'h1, 1'b0, 31'h00BB);
-        // enqueue_write(3'h2, 1'b1, 31'h00BB);
+        //  /****** EXAMPLE CODE ******/
+        // // Always put data LSB-aligned. The model will automagically move bytes to their proper position.
+        // // enqueue_read(3'h1, 1'b0, 31'h00BB);
+        // // enqueue_write(3'h2, 1'b1, 31'h00BB);
 
-        testcase = "reset";
-        n_rst = 1;
-        reset_model();
-        reset_dut();
+        // testcase = "reset";
+        // n_rst = 1;
+        // reset_model();
+        // reset_dut();
 
-        // ----- TEST 1: WRITE REGISTER 0 & INVALID READ-----
-        testcase = "Write weight register at addr 4'h0 @ hsize = 3";
-        n_rst = 1;
-        reset_model();
-        reset_dut();
-        @(negedge clk);
+        // // ----- TEST 1: WRITE REGISTER 0 & INVALID READ-----
+        // testcase = "Write weight register at addr 4'h0 @ hsize = 3";
+        // n_rst = 1;
+        // reset_model();
+        // reset_dut();
+        // @(negedge clk);
 
-        enqueue_write(10'd0, 2'd3, 64'd1);
-        execute_transactions(1);
+        // enqueue_write(10'd0, 2'd3, 64'd1);
+        // execute_transactions(1);
 
-        // Read back
-        enqueue_read(10'd0, 2'd3, 64'd0);
-        execute_transactions(1);
+        // // Read back
+        // enqueue_read(10'd0, 2'd3, 64'd0);
+        // execute_transactions(1);
 
-        repeat(5) @(negedge clk);
+        // repeat(5) @(negedge clk);
 
-        testcase = "Write weight register at addr 4'h0 @ hsize = 2";
-        test_weight_reg(10'd0, 2'd2, 64'd2147483648);
+        // testcase = "Write weight register at addr 4'h0 @ hsize = 2";
+        // test_weight_reg(10'd0, 2'd2, 64'd2147483648);
 
-        testcase = "Write weight register at addr 4'h0 @ hsize = 1";
-        test_weight_reg(10'd0, 2'd1, 64'd32768);
+        // testcase = "Write weight register at addr 4'h0 @ hsize = 1";
+        // test_weight_reg(10'd0, 2'd1, 64'd32768);
 
-        testcase = "Write weight register at addr 4'h0 @ hsize = 0";
-        test_weight_reg(10'd0, 2'd0, 64'd128);
+        // testcase = "Write weight register at addr 4'h0 @ hsize = 0";
+        // test_weight_reg(10'd0, 2'd0, 64'd128);
 
-        // ----- TEST 2: WRITE REGISTER 1 & INVALID READ -----
-        testcase = "Write weight register at addr 4'h001 @ hsize = 3";
-        n_rst = 1;
-        reset_model();
-        reset_dut();
-        @(negedge clk);
+        // // ----- TEST 2: WRITE REGISTER 1 & INVALID READ -----
+        // testcase = "Write weight register at addr 4'h001 @ hsize = 3";
+        // n_rst = 1;
+        // reset_model();
+        // reset_dut();
+        // @(negedge clk);
 
-        enqueue_write(10'h001, 2'd3, 64'd32768); 
-        execute_transactions(1);
+        // enqueue_write(10'h001, 2'd3, 64'd32768); 
+        // execute_transactions(1);
 
 
-        // Read back
-        enqueue_read(10'h001, 2'd3, 64'd0);
-        execute_transactions(1);
+        // // Read back
+        // enqueue_read(10'h001, 2'd3, 64'd0);
+        // execute_transactions(1);
 
-        repeat(5) @(negedge clk);
+        // repeat(5) @(negedge clk);
 
-        testcase = "Write weight register at addr 4'h001 @ hsize = 2";
-        test_weight_reg(10'h001, 2'd2, 64'd549755813890); // ensures written in middle 32 bits
+        // testcase = "Write weight register at addr 4'h001 @ hsize = 2";
+        // test_weight_reg(10'h001, 2'd2, 64'd549755813890); // ensures written in middle 32 bits
 
-        testcase = "Write weight register at addr 4'h001 @ hsize = 1";
-        test_weight_reg(10'h001, 2'd1, 64'd8388608); // middle 16 bits write  
+        // testcase = "Write weight register at addr 4'h001 @ hsize = 1";
+        // test_weight_reg(10'h001, 2'd1, 64'd8388608); // middle 16 bits write  
 
-        testcase = "Write weight register at addr 4'h001 @ hsize = 0";
-        test_weight_reg(10'h001, 2'd0, 64'd32768); // lowest 8 bit write
+        // testcase = "Write weight register at addr 4'h001 @ hsize = 0";
+        // test_weight_reg(10'h001, 2'd0, 64'd32768); // lowest 8 bit write
 
-        // ----- TEST 3: WRITE REGISTER 2 & INVALID READ -----
-        testcase = "Write weight register at addr 4'h002 @ hsize = 3";
-        n_rst = 1;
-        reset_model();
-        reset_dut();
-        @(negedge clk);
+        // // ----- TEST 3: WRITE REGISTER 2 & INVALID READ -----
+        // testcase = "Write weight register at addr 4'h002 @ hsize = 3";
+        // n_rst = 1;
+        // reset_model();
+        // reset_dut();
+        // @(negedge clk);
 
-        enqueue_write(10'h002, 2'd3, 64'd32768); 
-        execute_transactions(1);
+        // enqueue_write(10'h002, 2'd3, 64'd32768); 
+        // execute_transactions(1);
 
-        // Read back
-        enqueue_read(10'h002, 2'd3, 64'd0);
-        execute_transactions(1);
+        // // Read back
+        // enqueue_read(10'h002, 2'd3, 64'd0);
+        // execute_transactions(1);
 
-        repeat(5) @(negedge clk);
+        // repeat(5) @(negedge clk);
 
-        testcase = "Write weight register at addr 4'h002 @ hsize = 2";
-        test_weight_reg(10'h002, 2'd2, 64'd140737488360000); // ensures written in middle 32 bits
+        // testcase = "Write weight register at addr 4'h002 @ hsize = 2";
+        // test_weight_reg(10'h002, 2'd2, 64'd140737488360000); // ensures written in middle 32 bits
 
-        testcase = "Write weight register at addr 4'h002 @ hsize = 1";
-        test_weight_reg(10'h002, 2'd1, 64'd2147483648); // middle 16 bits write  
+        // testcase = "Write weight register at addr 4'h002 @ hsize = 1";
+        // test_weight_reg(10'h002, 2'd1, 64'd2147483648); // middle 16 bits write  
 
-        testcase = "Write weight register at addr 4'h002 @ hsize = 0";
-        test_weight_reg(10'h002, 2'd0, 64'd8388608); // middle 8 bit write
+        // testcase = "Write weight register at addr 4'h002 @ hsize = 0";
+        // test_weight_reg(10'h002, 2'd0, 64'd8388608); // middle 8 bit write
 
-        // ----- TEST 4: WRITE REGISTER 3 & INVALID READ -----
-        testcase = "Write weight register at addr 4'h003 @ hsize = 3";
-        n_rst = 1;
-        reset_model();
-        reset_dut();
-        @(negedge clk);
+        // // ----- TEST 4: WRITE REGISTER 3 & INVALID READ -----
+        // testcase = "Write weight register at addr 4'h003 @ hsize = 3";
+        // n_rst = 1;
+        // reset_model();
+        // reset_dut();
+        // @(negedge clk);
 
-        enqueue_write(10'h003, 2'd3, 64'd32768); 
-        execute_transactions(1);
+        // enqueue_write(10'h003, 2'd3, 64'd32768); 
+        // execute_transactions(1);
 
-        // Read back
-        enqueue_read(10'h003, 2'd3, 64'd0);
-        execute_transactions(1);
+        // // Read back
+        // enqueue_read(10'h003, 2'd3, 64'd0);
+        // execute_transactions(1);
 
-        repeat(5) @(negedge clk);
+        // repeat(5) @(negedge clk);
 
-        testcase = "Write weight register at addr 4'h003 @ hsize = 2";
-        test_weight_reg(10'h003, 2'd2, 64'd36028797019000000); // ensures written in middle 32 bits
+        // testcase = "Write weight register at addr 4'h003 @ hsize = 2";
+        // test_weight_reg(10'h003, 2'd2, 64'd36028797019000000); // ensures written in middle 32 bits
 
-        testcase = "Write weight register at addr 4'h003 @ hsize = 1";
-        test_weight_reg(10'h003, 2'd1, 64'd549755813890); // middle 16 bits write  
+        // testcase = "Write weight register at addr 4'h003 @ hsize = 1";
+        // test_weight_reg(10'h003, 2'd1, 64'd549755813890); // middle 16 bits write  
 
-        testcase = "Write weight register at addr 4'h003 @ hsize = 0";
-        test_weight_reg(10'h003, 2'd0, 64'd2147483648); // middle 8 bit write
+        // testcase = "Write weight register at addr 4'h003 @ hsize = 0";
+        // test_weight_reg(10'h003, 2'd0, 64'd2147483648); // middle 8 bit write
 
 
-        // ----- TEST 5: WRITE REGISTER 4 & INVALID READ -----
-        testcase = "Write weight register at addr 4'h004 @ hsize = 3";
-        n_rst = 1;
-        reset_model();
-        reset_dut();
-        @(negedge clk);
+        // // ----- TEST 5: WRITE REGISTER 4 & INVALID READ -----
+        // testcase = "Write weight register at addr 4'h004 @ hsize = 3";
+        // n_rst = 1;
+        // reset_model();
+        // reset_dut();
+        // @(negedge clk);
 
-        enqueue_write(10'h004, 2'd3, 64'd9223372036900000000); // highest 64 bit
-        execute_transactions(1);
+        // enqueue_write(10'h004, 2'd3, 64'd9223372036900000000); // highest 64 bit
+        // execute_transactions(1);
 
-        // Read back
-        enqueue_read(10'h004, 2'd3, 64'd0);
-        execute_transactions(1);
+        // // Read back
+        // enqueue_read(10'h004, 2'd3, 64'd0);
+        // execute_transactions(1);
 
-        repeat(5) @(negedge clk);
+        // repeat(5) @(negedge clk);
 
-        testcase = "Write weight register at addr 4'h004 @ hsize = 2";
-        test_weight_reg(10'h004, 2'd2, 64'd9223372036900000000); // ensures written in middle 32 bits
+        // testcase = "Write weight register at addr 4'h004 @ hsize = 2";
+        // test_weight_reg(10'h004, 2'd2, 64'd9223372036900000000); // ensures written in middle 32 bits
 
-        testcase = "Write weight register at addr 4'h004 @ hsize = 1";
-        test_weight_reg(10'h004, 2'd1, 64'd140737488360000); // middle 16 bits write  
+        // testcase = "Write weight register at addr 4'h004 @ hsize = 1";
+        // test_weight_reg(10'h004, 2'd1, 64'd140737488360000); // middle 16 bits write  
 
-        testcase = "Write weight register at addr 4'h004 @ hsize = 0";
-        test_weight_reg(10'h004, 2'd0, 64'd549755813890); // middle 8 bit write
+        // testcase = "Write weight register at addr 4'h004 @ hsize = 0";
+        // test_weight_reg(10'h004, 2'd0, 64'd549755813890); // middle 8 bit write
 
 
-        // ----- TEST 6: WRITE REGISTER 5 & INVALID READ -----
-        testcase = "Write weight register at addr 4'h005 @ hsize = 3";
-        n_rst = 1;
-        reset_model();
-        reset_dut();
-        @(negedge clk);
+        // // ----- TEST 6: WRITE REGISTER 5 & INVALID READ -----
+        // testcase = "Write weight register at addr 4'h005 @ hsize = 3";
+        // n_rst = 1;
+        // reset_model();
+        // reset_dut();
+        // @(negedge clk);
 
-        enqueue_write(10'h005, 2'd3, 64'd9223372036900000000); // highest 64 bit
-        execute_transactions(1);
+        // enqueue_write(10'h005, 2'd3, 64'd9223372036900000000); // highest 64 bit
+        // execute_transactions(1);
 
-        // Read back
-        enqueue_read(10'h005, 2'd3, 64'd0);
-        execute_transactions(1);
+        // // Read back
+        // enqueue_read(10'h005, 2'd3, 64'd0);
+        // execute_transactions(1);
 
-        repeat(5) @(negedge clk);
+        // repeat(5) @(negedge clk);
 
-        testcase = "Write weight register at addr 4'h005 @ hsize = 2";
-        test_weight_reg(10'h005, 2'd2, 64'd9223372036900000000); // ensures written in middle 32 bits
+        // testcase = "Write weight register at addr 4'h005 @ hsize = 2";
+        // test_weight_reg(10'h005, 2'd2, 64'd9223372036900000000); // ensures written in middle 32 bits
 
-        testcase = "Write weight register at addr 4'h005 @ hsize = 1";
-        test_weight_reg(10'h005, 2'd1, 64'd36028797019000000); // middle 16 bits write  
+        // testcase = "Write weight register at addr 4'h005 @ hsize = 1";
+        // test_weight_reg(10'h005, 2'd1, 64'd36028797019000000); // middle 16 bits write  
 
-        testcase = "Write weight register at addr 4'h005 @ hsize = 0";
-        test_weight_reg(10'h005, 2'd0, 64'd140737488360000); // middle 8 bit write
+        // testcase = "Write weight register at addr 4'h005 @ hsize = 0";
+        // test_weight_reg(10'h005, 2'd0, 64'd140737488360000); // middle 8 bit write
 
-        // ----- TEST 7: WRITE REGISTER 6 & INVALID READ -----
-        testcase = "Write weight register at addr 4'h006 @ hsize = 3";
-        n_rst = 1;
-        reset_model();
-        reset_dut();
-        @(negedge clk);
+        // // ----- TEST 7: WRITE REGISTER 6 & INVALID READ -----
+        // testcase = "Write weight register at addr 4'h006 @ hsize = 3";
+        // n_rst = 1;
+        // reset_model();
+        // reset_dut();
+        // @(negedge clk);
 
-        enqueue_write(10'h006, 2'd3, 64'd9223372036900000000); // highest 64 bit
-        execute_transactions(1);
+        // enqueue_write(10'h006, 2'd3, 64'd9223372036900000000); // highest 64 bit
+        // execute_transactions(1);
 
-        // Read back
-        enqueue_read(10'h006, 2'd3, 64'd0);
-        execute_transactions(1);
+        // // Read back
+        // enqueue_read(10'h006, 2'd3, 64'd0);
+        // execute_transactions(1);
 
-        repeat(5) @(negedge clk);
+        // repeat(5) @(negedge clk);
 
-        testcase = "Write weight register at addr 4'h006 @ hsize = 2";
-        test_weight_reg(10'h006, 2'd2, 64'd9223372036900000000); // ensures written in middle 32 bits
+        // testcase = "Write weight register at addr 4'h006 @ hsize = 2";
+        // test_weight_reg(10'h006, 2'd2, 64'd9223372036900000000); // ensures written in middle 32 bits
 
-        testcase = "Write weight register at addr 4'h006 @ hsize = 1";
-        test_weight_reg(10'h006, 2'd1, 64'd9223372036900000000); // middle 16 bits write  
+        // testcase = "Write weight register at addr 4'h006 @ hsize = 1";
+        // test_weight_reg(10'h006, 2'd1, 64'd9223372036900000000); // middle 16 bits write  
 
-        testcase = "Write weight register at addr 4'h006 @ hsize = 0";
-        test_weight_reg(10'h006, 2'd0, 64'd36028797019000000); // middle 8 bit write
+        // testcase = "Write weight register at addr 4'h006 @ hsize = 0";
+        // test_weight_reg(10'h006, 2'd0, 64'd36028797019000000); // middle 8 bit write
 
-        // ----- TEST 8: WRITE REGISTER 7 & INVALID READ -----
-        testcase = "Write weight register at addr 4'h007 @ hsize = 3";
-        n_rst = 1;
-        reset_model();
-        reset_dut();
-        @(negedge clk);
+        // // ----- TEST 8: WRITE REGISTER 7 & INVALID READ -----
+        // testcase = "Write weight register at addr 4'h007 @ hsize = 3";
+        // n_rst = 1;
+        // reset_model();
+        // reset_dut();
+        // @(negedge clk);
 
-        enqueue_write(10'h007, 2'd3, 64'd9223372036900000000); // highest 64 bit
-        execute_transactions(1);
+        // enqueue_write(10'h007, 2'd3, 64'd9223372036900000000); // highest 64 bit
+        // execute_transactions(1);
 
-        // Read back
-        enqueue_read(10'h007, 2'd3, 64'd0);
-        execute_transactions(1);
+        // // Read back
+        // enqueue_read(10'h007, 2'd3, 64'd0);
+        // execute_transactions(1);
 
-        repeat(5) @(negedge clk);
+        // repeat(5) @(negedge clk);
 
-        testcase = "Write weight register at addr 4'h007 @ hsize = 2";
-        test_weight_reg(10'h007, 2'd2, 64'd9223372036900000000); // ensures written in middle 32 bits
+        // testcase = "Write weight register at addr 4'h007 @ hsize = 2";
+        // test_weight_reg(10'h007, 2'd2, 64'd9223372036900000000); // ensures written in middle 32 bits
 
-        testcase = "Write weight register at addr 4'h007 @ hsize = 1";
-        test_weight_reg(10'h007, 2'd1, 64'd9223372036900000000); // middle 16 bits write  
+        // testcase = "Write weight register at addr 4'h007 @ hsize = 1";
+        // test_weight_reg(10'h007, 2'd1, 64'd9223372036900000000); // middle 16 bits write  
 
-        testcase = "Write weight register at addr 4'h007 @ hsize = 0";
-        test_weight_reg(10'h007, 2'd0, 64'd9223372036900000000); // middle 8 bit write
+        // testcase = "Write weight register at addr 4'h007 @ hsize = 0";
+        // test_weight_reg(10'h007, 2'd0, 64'd9223372036900000000); // middle 8 bit write
 
-        // ----- TEST 9: WRITE REGISTER 8 & INVALID READ-----
-        testcase = "Write Input register at addr 4'h008 @ hsize = 3";
-        reset_model();
-        reset_dut();
-        @(negedge clk);
+        // // ----- TEST 9: WRITE REGISTER 8 & INVALID READ-----
+        // testcase = "Write Input register at addr 4'h008 @ hsize = 3";
+        // reset_model();
+        // reset_dut();
+        // @(negedge clk);
 
-        enqueue_write(10'h008, 2'd3, 64'd9223372036900000000);
-        execute_transactions(1);
+        // enqueue_write(10'h008, 2'd3, 64'd9223372036900000000);
+        // execute_transactions(1);
 
-        // Read back
-        enqueue_read(10'h008, 2'd3, 64'd0);
-        execute_transactions(1);
+        // // Read back
+        // enqueue_read(10'h008, 2'd3, 64'd0);
+        // execute_transactions(1);
 
-        repeat(5) @(negedge clk);
+        // repeat(5) @(negedge clk);
 
-        testcase = "Write Input register at addr 4'h008 @ hsize = 2";
-        test_weight_reg(10'h008, 2'd2, 64'd1073741824); // ensures written in middle 32 bits
+        // testcase = "Write Input register at addr 4'h008 @ hsize = 2";
+        // test_weight_reg(10'h008, 2'd2, 64'd1073741824); // ensures written in middle 32 bits
 
-        testcase = "Write Input register at addr 4'h008 @ hsize = 1";
-        test_weight_reg(10'h008, 2'd1, 64'd2147483648); // middle 16 bits write  
+        // testcase = "Write Input register at addr 4'h008 @ hsize = 1";
+        // test_weight_reg(10'h008, 2'd1, 64'd2147483648); // middle 16 bits write  
 
-        testcase = "Write Input register at addr 4'h008 @ hsize = 0";
-        test_weight_reg(10'h008, 2'd0, 64'd32768); // lowest 8 bit write
+        // testcase = "Write Input register at addr 4'h008 @ hsize = 0";
+        // test_weight_reg(10'h008, 2'd0, 64'd32768); // lowest 8 bit write
 
-        // ----- TEST 10: WRITE REGISTER 9 & INVALID READ-----
-        testcase = "Write Input register at addr 4'h009 @ hsize = 3";
-        n_rst = 1;
-        reset_model();
-        reset_dut();
-        @(negedge clk);
+        // // ----- TEST 10: WRITE REGISTER 9 & INVALID READ-----
+        // testcase = "Write Input register at addr 4'h009 @ hsize = 3";
+        // n_rst = 1;
+        // reset_model();
+        // reset_dut();
+        // @(negedge clk);
 
-        enqueue_write(10'h009, 2'd3, 64'd9223372036900000000); 
-        execute_transactions(1);
+        // enqueue_write(10'h009, 2'd3, 64'd9223372036900000000); 
+        // execute_transactions(1);
 
-        // Read back
-        enqueue_read(10'h009, 2'd3, 64'd0);
-        execute_transactions(1);
+        // // Read back
+        // enqueue_read(10'h009, 2'd3, 64'd0);
+        // execute_transactions(1);
 
-        repeat(5) @(negedge clk);
+        // repeat(5) @(negedge clk);
 
-        testcase = "Write Input register at addr 4'h009 @ hsize = 2";
-        test_weight_reg(10'h009, 2'd2, 64'd1073741824); // ensures written in middle 32 bits
+        // testcase = "Write Input register at addr 4'h009 @ hsize = 2";
+        // test_weight_reg(10'h009, 2'd2, 64'd1073741824); // ensures written in middle 32 bits
 
-        testcase = "Write Input register at addr 4'h009 @ hsize = 1";
-        test_weight_reg(10'h009, 2'd1, 64'd8388608); // middle 16 bits write  
+        // testcase = "Write Input register at addr 4'h009 @ hsize = 1";
+        // test_weight_reg(10'h009, 2'd1, 64'd8388608); // middle 16 bits write  
 
-        testcase = "Write Input register at addr 4'h009 @ hsize = 0";
-        test_weight_reg(10'h009, 2'd0, 64'd32768); // lowest 8 bit write
+        // testcase = "Write Input register at addr 4'h009 @ hsize = 0";
+        // test_weight_reg(10'h009, 2'd0, 64'd32768); // lowest 8 bit write
         
-        // ----- TEST 11: WRITE/READ REGISTER 10 -----
-        testcase = "Write bias register at addr 4'h010 @ hsize_reg = 3,2,1";
-        RAW(10'h010, 2'd3, 64'd9223372036900000000);
+        // // ----- TEST 11: WRITE/READ REGISTER 10 -----
+        // testcase = "Write bias register at addr 4'h010 @ hsize_reg = 3,2,1";
+        // RAW(10'h010, 2'd3, 64'd9223372036900000000);
 
-        RAW(10'h010, 2'd2, 64'd2147483648);
+        // RAW(10'h010, 2'd2, 64'd2147483648);
 
-        RAW(10'h010, 2'd1, 64'd32768);
+        // RAW(10'h010, 2'd1, 64'd32768);
 
-        RAW(10'h010, 2'd0, 64'd128);
+        // RAW(10'h010, 2'd0, 64'd128);
 
 
-        // ----- TEST 12: WRITE/READ REGISTER 11 -----
-        testcase = "Write bias register at addr 4'h011 @ hsize_reg = 3,2,1";
-        RAW(10'h011, 2'd3, 64'd9223372036900000000);
+        // // ----- TEST 12: WRITE/READ REGISTER 11 -----
+        // testcase = "Write bias register at addr 4'h011 @ hsize_reg = 3,2,1";
+        // RAW(10'h011, 2'd3, 64'd9223372036900000000);
 
-        RAW(10'h011, 2'd2, 64'd549755813890);
+        // RAW(10'h011, 2'd2, 64'd549755813890);
 
-        RAW(10'h011, 2'd1, 64'd8388608);
+        // RAW(10'h011, 2'd1, 64'd8388608);
 
-        RAW(10'h011, 2'd0, 64'd32768);
+        // RAW(10'h011, 2'd0, 64'd32768);
 
-        // ----- TEST 12: WRITE/READ REGISTER 12 -----
-        testcase = "Write bias register at addr 4'h012 @ hsize_reg = 3,2,1";
-        RAW(10'h012, 2'd3, 64'd9223372036900000000);
+        // // ----- TEST 12: WRITE/READ REGISTER 12 -----
+        // testcase = "Write bias register at addr 4'h012 @ hsize_reg = 3,2,1";
+        // RAW(10'h012, 2'd3, 64'd9223372036900000000);
 
-        RAW(10'h012, 2'd2, 64'd140737488360000);
+        // RAW(10'h012, 2'd2, 64'd140737488360000);
 
-        RAW(10'h012, 2'd1, 64'd2147483648);
+        // RAW(10'h012, 2'd1, 64'd2147483648);
 
-        RAW(10'h012, 2'd1, 64'd8388608);
+        // RAW(10'h012, 2'd1, 64'd8388608);
 
-        // ----- TEST 13: WRITE/READ REGISTER 13 -----
-        testcase = "Write bias register at addr 4'h013 @ hsize_reg = 3,2,1";
-        RAW(10'h013, 2'd3, 64'd9223372036900000000);
+        // // ----- TEST 13: WRITE/READ REGISTER 13 -----
+        // testcase = "Write bias register at addr 4'h013 @ hsize_reg = 3,2,1";
+        // RAW(10'h013, 2'd3, 64'd9223372036900000000);
 
-        RAW(10'h013, 2'd2, 64'd36028797019000000);
+        // RAW(10'h013, 2'd2, 64'd36028797019000000);
 
-        RAW(10'h013, 2'd1, 64'd549755813890);
+        // RAW(10'h013, 2'd1, 64'd549755813890);
 
-        RAW(10'h013, 2'd1, 64'd2147483648);
+        // RAW(10'h013, 2'd1, 64'd2147483648);
 
-        // ----- TEST 13: WRITE/READ REGISTER 14 -----
-        testcase = "Write bias register at addr 4'h014 @ hsize_reg = 3,2,1";
-        RAW(10'h014, 2'd3, 64'd9223372036900000000);
+        // // ----- TEST 13: WRITE/READ REGISTER 14 -----
+        // testcase = "Write bias register at addr 4'h014 @ hsize_reg = 3,2,1";
+        // RAW(10'h014, 2'd3, 64'd9223372036900000000);
 
-        RAW(10'h014, 2'd2, 64'd9223372036900000000);
+        // RAW(10'h014, 2'd2, 64'd9223372036900000000);
 
-        RAW(10'h014, 2'd1, 64'd140737488360000);
+        // RAW(10'h014, 2'd1, 64'd140737488360000);
 
-        RAW(10'h014, 2'd1, 64'd549755813890);
+        // RAW(10'h014, 2'd1, 64'd549755813890);
 
-        // ----- TEST 14: WRITE/READ REGISTER 15 -----
-        testcase = "Write bias register at addr 4'h015 @ hsize_reg = 3,2,1";
-        RAW(10'h015, 2'd3, 64'd9223372036900000000);
+        // // ----- TEST 14: WRITE/READ REGISTER 15 -----
+        // testcase = "Write bias register at addr 4'h015 @ hsize_reg = 3,2,1";
+        // RAW(10'h015, 2'd3, 64'd9223372036900000000);
 
-        RAW(10'h015, 2'd2, 64'd9223372036900000000);
+        // RAW(10'h015, 2'd2, 64'd9223372036900000000);
 
-        RAW(10'h015, 2'd1, 64'd36028797019000000);
+        // RAW(10'h015, 2'd1, 64'd36028797019000000);
 
-        RAW(10'h015, 2'd1, 64'd140737488360000);
+        // RAW(10'h015, 2'd1, 64'd140737488360000);
 
-        // ----- TEST 15: WRITE/READ REGISTER 16 -----
-        testcase = "Write bias register at addr 4'h016 @ hsize_reg = 3,2,1";
-        RAW(10'h016, 2'd3, 64'd9223372036900000000);
+        // // ----- TEST 15: WRITE/READ REGISTER 16 -----
+        // testcase = "Write bias register at addr 4'h016 @ hsize_reg = 3,2,1";
+        // RAW(10'h016, 2'd3, 64'd9223372036900000000);
 
-        RAW(10'h016, 2'd2, 64'd9223372036900000000);
+        // RAW(10'h016, 2'd2, 64'd9223372036900000000);
 
-        RAW(10'h016, 2'd1, 64'd9223372036900000000);
+        // RAW(10'h016, 2'd1, 64'd9223372036900000000);
 
-        RAW(10'h016, 2'd1, 64'd36028797019000000);
+        // RAW(10'h016, 2'd1, 64'd36028797019000000);
 
-        // ----- TEST 16: WRITE/READ REGISTER 17 -----
-        testcase = "Write bias register at addr 4'h017 @ hsize_reg = 3,2,1";
-        RAW(10'h017, 2'd3, 64'd9223372036900000000);
+        // // ----- TEST 16: WRITE/READ REGISTER 17 -----
+        // testcase = "Write bias register at addr 4'h017 @ hsize_reg = 3,2,1";
+        // RAW(10'h017, 2'd3, 64'd9223372036900000000);
 
-        RAW(10'h017, 2'd2, 64'd9223372036900000000);
+        // RAW(10'h017, 2'd2, 64'd9223372036900000000);
 
-        RAW(10'h017, 2'd1, 64'd9223372036900000000);
+        // RAW(10'h017, 2'd1, 64'd9223372036900000000);
 
-        RAW(10'h017, 2'd1, 64'd36028797019000000);
+        // RAW(10'h017, 2'd1, 64'd36028797019000000);
 
-        // Example Burst Setup - Dynamic Array Required
-        testcase = "BURST Write weight register at addr 4'h008 by  ";
-        n_rst = 1;
-        reset_model();
-        reset_dut();
-        @(negedge clk);
-
-        data = new [4];
-        // data = {64'h8888_8888_8888, 64'h7777_7777_7777,64'h6666_6666_6666,64'h5555_5555_5555,64'h4444_4444_4444,64'h3333_3333_3333,64'h2222_2222_2222,64'h1111_1111_1111};
-        data = {64'h8888_8888_8888, 64'h7777_7777_7777,64'h6666_6666_6666,64'h5555_5555_5555};
-        enqueue_burst_write(10'h008, 2'd3, 3'd2, data); // 32 bits 
-        execute_transactions(4); // Burst counts as 8 transactions for 8 beats
-        finish_transactions();
-
-        // // Read Output register
-        // testcase = "Read Output register h018";
+        // // Example Burst Setup - Dynamic Array Required
+        // testcase = "BURST Write weight register at addr 4'h008 by  ";
         // n_rst = 1;
         // reset_model();
         // reset_dut();
         // @(negedge clk);
 
-        // output_reg = 64'd8792;
+        // data = new [4];
+        // // data = {64'h8888_8888_8888, 64'h7777_7777_7777,64'h6666_6666_6666,64'h5555_5555_5555,64'h4444_4444_4444,64'h3333_3333_3333,64'h2222_2222_2222,64'h1111_1111_1111};
+        // data = {64'h8888_8888_8888, 64'h7777_7777_7777,64'h6666_6666_6666,64'h5555_5555_5555};
+        // enqueue_burst_write(10'h008, 2'd3, 3'd2, data); // 32 bits 
+        // execute_transactions(4); // Burst counts as 8 transactions for 8 beats
+        // finish_transactions();
 
-        // enqueue_read(10'h018, 2'd3, 64'd0);
-        // enqueue_read(10'h018, 2'd2, 64'd0);
-        // enqueue_read(10'h018, 2'd1, 64'd0);
-        // enqueue_read(10'h018, 2'd0, 64'd0);
-        // execute_transactions(4);
-        // repeat(5) @(negedge clk);
+        // // // Read Output register
+        // // testcase = "Read Output register h018";
+        // // n_rst = 1;
+        // // reset_model();
+        // // reset_dut();
+        // // @(negedge clk);
 
-        // // Read Output register
-        // testcase = "Read Output register h019";
-        // n_rst = 1;
-        // reset_model();
-        // reset_dut();
-        // @(negedge clk);
+        // // output_reg = 64'd8792;
 
-        // output_reg = 64'd5000500;
-        // enqueue_read(10'h019, 2'd3, 64'd0);
-        // execute_transactions(1);
-        // enqueue_read(10'h019, 2'd2, 64'd0);
-        // execute_transactions(1);
-        // enqueue_read(10'h019, 2'd1, 64'd0);
-        // execute_transactions(1);
-        // enqueue_read(10'h019, 2'd0, 64'd0);
-        // execute_transactions(1);
-        // repeat(5) @(negedge clk);
-        // enqueue_read(10'h019, 2'd3, 64'd0);
-        // enqueue_read(10'h019, 2'd2, 64'd0);
-        // enqueue_read(10'h019, 2'd1, 64'd0);
-        // enqueue_read(10'h019, 2'd0, 64'd0);
-        // execute_transactions(4);
-        // repeat(5) @(negedge clk);
+        // // enqueue_read(10'h018, 2'd3, 64'd0);
+        // // enqueue_read(10'h018, 2'd2, 64'd0);
+        // // enqueue_read(10'h018, 2'd1, 64'd0);
+        // // enqueue_read(10'h018, 2'd0, 64'd0);
+        // // execute_transactions(4);
+        // // repeat(5) @(negedge clk);
+
+        // // // Read Output register
+        // // testcase = "Read Output register h019";
+        // // n_rst = 1;
+        // // reset_model();
+        // // reset_dut();
+        // // @(negedge clk);
+
+        // // output_reg = 64'd5000500;
+        // // enqueue_read(10'h019, 2'd3, 64'd0);
+        // // execute_transactions(1);
+        // // enqueue_read(10'h019, 2'd2, 64'd0);
+        // // execute_transactions(1);
+        // // enqueue_read(10'h019, 2'd1, 64'd0);
+        // // execute_transactions(1);
+        // // enqueue_read(10'h019, 2'd0, 64'd0);
+        // // execute_transactions(1);
+        // // repeat(5) @(negedge clk);
+        // // enqueue_read(10'h019, 2'd3, 64'd0);
+        // // enqueue_read(10'h019, 2'd2, 64'd0);
+        // // enqueue_read(10'h019, 2'd1, 64'd0);
+        // // enqueue_read(10'h019, 2'd0, 64'd0);
+        // // execute_transactions(4);
+        // // repeat(5) @(negedge clk);
+
+        // // // Read Error register
+        // // testcase = "Read Error register h020 & h021";
+        // // n_rst = 1;
+        // // reset_model();
+        // // reset_dut();
+        // // @(negedge clk);
+
+        // // buffer_error = 1'b1;
+
+        // // enqueue_read(10'h020, 2'd2, 64'd0);
+        // // execute_transactions(1);
+        // // enqueue_read(10'h021, 2'd1, 64'd0);
+        // // execute_transactions(1);
+        // // repeat(5) @(negedge clk);
 
         // // Read Error register
-        // testcase = "Read Error register h020 & h021";
+        // testcase = "Check error clearing";
         // n_rst = 1;
         // reset_model();
         // reset_dut();
         // @(negedge clk);
 
-        // buffer_error = 1'b1;
-
-        // enqueue_read(10'h020, 2'd2, 64'd0);
+        // enqueue_write(10'h001, 2'd3, 64'd70);
         // execute_transactions(1);
-        // enqueue_read(10'h021, 2'd1, 64'd0);
+        // enqueue_read(10'h001, 2'd3, 64'd0);
         // execute_transactions(1);
         // repeat(5) @(negedge clk);
-
-        // Read Error register
-        testcase = "Check error clearing";
-        n_rst = 1;
-        reset_model();
-        reset_dut();
-        @(negedge clk);
-
-        enqueue_write(10'h001, 2'd3, 64'd70);
-        execute_transactions(1);
-        enqueue_read(10'h001, 2'd3, 64'd0);
-        execute_transactions(1);
-        repeat(5) @(negedge clk);
-
-        // Read/write control register
-        testcase = "Read/write control register h0222";
-        n_rst = 1;
-        reset_model();
-        reset_dut();
-        @(negedge clk);
-
-        enqueue_write(10'h022, 2'd0, 64'd254);
-        execute_transactions(1);
-        enqueue_read(10'h022, 2'd0, 64'd0);
-        execute_transactions(1);
-        repeat(5) @(negedge clk);
-
-        // Read/write control register
-        testcase = "Read/write control register h0222";
-        n_rst = 1;
-        reset_model();
-        reset_dut();
-        @(negedge clk);
-
-        enqueue_write(10'h022, 2'd1, 64'd254);
-        execute_transactions(1);
-        enqueue_read(10'h022, 2'd1, 64'd0);
-        execute_transactions(1);
-        repeat(5) @(negedge clk);
-
-        // Read/write control register
-        testcase = "Read/write control register h0222";
-        n_rst = 1;
-        reset_model();
-        reset_dut();
-        @(negedge clk);
-
-        enqueue_write(10'h022, 2'd2, 64'd254);
-        execute_transactions(1);
-        enqueue_read(10'h022, 2'd2, 64'd0);
-        execute_transactions(1);
-        repeat(5) @(negedge clk);
-
-        // Read/write control register
-        testcase = "Read/write control register h0222";
-        n_rst = 1;
-        reset_model();
-        reset_dut();
-        @(negedge clk);
-
-        enqueue_write(10'h022, 2'd3, 64'd254);
-        execute_transactions(1);
-        enqueue_read(10'h022, 2'd3, 64'd0);
-        execute_transactions(1);
-        repeat(5) @(negedge clk);
 
         // // Read/write control register
-        // testcase = "Read status register h023";
+        // testcase = "Read/write control register h0222";
         // n_rst = 1;
-        // controller_busy = 1'b0;
-        // data_ready = 1'b0;
-        // output_reg = 64'd0;
-        // buffer_error = 1'b0;
-        // weight_done = 1'b0;
-        // input_done = 1'b0;
         // reset_model();
         // reset_dut();
         // @(negedge clk);
-        // reset_done = "Here 16";
 
-        // controller_busy = 1'b1;
-        // data_ready = 1'b1;
-
-        // // enqueue_read(10'h023, 2'd3, 64'd3);
-        // enqueue_read(10'h023, 2'd3, 64'd0);
+        // enqueue_write(10'h022, 2'd0, 64'd254);
+        // execute_transactions(1);
+        // enqueue_read(10'h022, 2'd0, 64'd0);
         // execute_transactions(1);
         // repeat(5) @(negedge clk);
 
-        // Read/write Activation register
-        testcase = "Read/write Activation register h024";
-        n_rst = 1;
-        reset_model();
-        reset_dut();
-        @(negedge clk);
-
-        enqueue_write(10'h024, 2'd0, 64'd255);
-        execute_transactions(1);
-        enqueue_read(10'h024, 2'd0, 64'd0);
-        execute_transactions(1);
-        repeat(5) @(negedge clk);
-
-        // Read/write Activation register
-        testcase = "Read/write Activation register h024";
-        n_rst = 1;
-        reset_model();
-        reset_dut();
-        @(negedge clk);
-
-        enqueue_write(10'h024, 2'd1, 64'd255);
-        execute_transactions(1);
-        enqueue_read(10'h024, 2'd1, 64'd0);
-        execute_transactions(1);
-        repeat(5) @(negedge clk);
-
-         // Read/write Activation register
-        testcase = "Read/write Activation register h024";
-        n_rst = 1;
-        reset_model();
-        reset_dut();
-        @(negedge clk);
-
-        enqueue_write(10'h024, 2'd2, 64'd255);
-        execute_transactions(1);
-        enqueue_read(10'h024, 2'd2, 64'd0);
-        execute_transactions(1);
-        repeat(5) @(negedge clk);
-
-        // Read/write Activation register
-        testcase = "Read/write Activation register h024";
-        n_rst = 1;
-        reset_model();
-        reset_dut();
-        @(negedge clk);
-
-        enqueue_write(10'h024, 2'd3, 64'd255);
-        execute_transactions(1);
-        enqueue_read(10'h024, 2'd3, 64'd0);
-        execute_transactions(1);
-        repeat(5) @(negedge clk);
-
-        // testcase = "stalling";
+        // // Read/write control register
+        // testcase = "Read/write control register h0222";
         // n_rst = 1;
-        // controller_busy = 1'b0;
-        // data_ready = 1'b0;
-        // output_reg = 64'd0;
-        // buffer_error = 1'b0;
-        // weight_done = 1'b0;
-        // input_done = 1'b0;
         // reset_model();
         // reset_dut();
         // @(negedge clk);
-        // reset_done = "Here 18";
 
-        // buffer_error = 1'b1;
-
-        // enqueue_write(10'h024, 2'd3, 64'd3);
+        // enqueue_write(10'h022, 2'd1, 64'd254);
         // execute_transactions(1);
-        // enqueue_read(10'h024, 2'd3, 64'd0);
+        // enqueue_read(10'h022, 2'd1, 64'd0);
         // execute_transactions(1);
-
-
-        // buffer_error = 1'b0;
-        // enqueue_write(10'h024, 2'd3, 64'd3);
-        // execute_transactions(1);
-        // enqueue_read(10'h024, 2'd3, 64'd0);
-        // execute_transactions(1);
-
         // repeat(5) @(negedge clk);
 
+        // // Read/write control register
+        // testcase = "Read/write control register h0222";
+        // n_rst = 1;
+        // reset_model();
+        // reset_dut();
+        // @(negedge clk);
+
+        // enqueue_write(10'h022, 2'd2, 64'd254);
+        // execute_transactions(1);
+        // enqueue_read(10'h022, 2'd2, 64'd0);
+        // execute_transactions(1);
+        // repeat(5) @(negedge clk);
+
+        // // Read/write control register
+        // testcase = "Read/write control register h0222";
+        // n_rst = 1;
+        // reset_model();
+        // reset_dut();
+        // @(negedge clk);
+
+        // enqueue_write(10'h022, 2'd3, 64'd254);
+        // execute_transactions(1);
+        // enqueue_read(10'h022, 2'd3, 64'd0);
+        // execute_transactions(1);
+        // repeat(5) @(negedge clk);
+
+        // // // Read/write control register
+        // // testcase = "Read status register h023";
+        // // n_rst = 1;
+        // // controller_busy = 1'b0;
+        // // data_ready = 1'b0;
+        // // output_reg = 64'd0;
+        // // buffer_error = 1'b0;
+        // // weight_done = 1'b0;
+        // // input_done = 1'b0;
+        // // reset_model();
+        // // reset_dut();
+        // // @(negedge clk);
+        // // reset_done = "Here 16";
+
+        // // controller_busy = 1'b1;
+        // // data_ready = 1'b1;
+
+        // // // enqueue_read(10'h023, 2'd3, 64'd3);
+        // // enqueue_read(10'h023, 2'd3, 64'd0);
+        // // execute_transactions(1);
+        // // repeat(5) @(negedge clk);
+
+        // // Read/write Activation register
+        // testcase = "Read/write Activation register h024";
+        // n_rst = 1;
+        // reset_model();
+        // reset_dut();
+        // @(negedge clk);
+
+        // enqueue_write(10'h024, 2'd0, 64'd255);
+        // execute_transactions(1);
+        // enqueue_read(10'h024, 2'd0, 64'd0);
+        // execute_transactions(1);
+        // repeat(5) @(negedge clk);
+
+        // // Read/write Activation register
+        // testcase = "Read/write Activation register h024";
+        // n_rst = 1;
+        // reset_model();
+        // reset_dut();
+        // @(negedge clk);
+
+        // enqueue_write(10'h024, 2'd1, 64'd255);
+        // execute_transactions(1);
+        // enqueue_read(10'h024, 2'd1, 64'd0);
+        // execute_transactions(1);
+        // repeat(5) @(negedge clk);
+
+        //  // Read/write Activation register
+        // testcase = "Read/write Activation register h024";
+        // n_rst = 1;
+        // reset_model();
+        // reset_dut();
+        // @(negedge clk);
+
+        // enqueue_write(10'h024, 2'd2, 64'd255);
+        // execute_transactions(1);
+        // enqueue_read(10'h024, 2'd2, 64'd0);
+        // execute_transactions(1);
+        // repeat(5) @(negedge clk);
+
+        // // Read/write Activation register
+        // testcase = "Read/write Activation register h024";
+        // n_rst = 1;
+        // reset_model();
+        // reset_dut();
+        // @(negedge clk);
+
+        // enqueue_write(10'h024, 2'd3, 64'd255);
+        // execute_transactions(1);
+        // enqueue_read(10'h024, 2'd3, 64'd0);
+        // execute_transactions(1);
+        // repeat(5) @(negedge clk);
+
+        // // testcase = "stalling";
+        // // n_rst = 1;
+        // // controller_busy = 1'b0;
+        // // data_ready = 1'b0;
+        // // output_reg = 64'd0;
+        // // buffer_error = 1'b0;
+        // // weight_done = 1'b0;
+        // // input_done = 1'b0;
+        // // reset_model();
+        // // reset_dut();
+        // // @(negedge clk);
+        // // reset_done = "Here 18";
+
+        // // buffer_error = 1'b1;
+
+        // // enqueue_write(10'h024, 2'd3, 64'd3);
+        // // execute_transactions(1);
+        // // enqueue_read(10'h024, 2'd3, 64'd0);
+        // // execute_transactions(1);
+
+
+        // // buffer_error = 1'b0;
+        // // enqueue_write(10'h024, 2'd3, 64'd3);
+        // // execute_transactions(1);
+        // // enqueue_read(10'h024, 2'd3, 64'd0);
+        // // execute_transactions(1);
+
+        // // repeat(5) @(negedge clk);
+
+        n_rst = 1;
+        reset_model();
+        reset_dut();
+        @(negedge clk);
+
+        /*
+        0x00	8	Write-Only	Weight Register: Write port for loading weights into buffer.
+        0x08	8	Write-Only	Input Register: Write port for writing inputs to the buffer.
+        0x10	8	Read/Write	Bias Register: Holds the bias for the current inference operation.
+        0x18	8	Read-Only	Output Register: Read port for reading outputs from the array.
+        0x20	2	Read-Only	Error Register: (Active-High Bits)
+        Bit 0 → Buffer occupancy error.
+        Bit 8 → Device busy.
+        0x22	1	Read/Write	Control Register:
+        Bit 0 → Start inference.
+        Bit 1 → Load weights.
+        0x23	1	Read-Only	Status Register:
+        Bit 0 → Inference is complete and data is ready.
+        Bit 1 → Design is currently busy.
+        0x24	1	Read/Write	Activation Control Register:
+        Value=0 → ReLU activation.
+        Value=1 → Binary activation.
+        Value=2 → Identity activation.
+        Value=3 → Leaky ReLU activation.        
+        */
+
+        $display ("TESTCASE1: WEIGHT/INPUT BUFFER READ/WRITE");
+        //activation mode set to ReLU
+        /*
+        weights = {64'h1111_1111_1111_1111, 64'h2222_2222_2222_2222, 64'h3333_3333_3333_3333, 64'h4444_4444_4444_4444,
+                   64'h1111_1111_1111_1111, 64'h2222_2222_2222_2222, 64'h3333_3333_3333_3333, 64'h4444_4444_4444_4444};
+        inputs  = {64'hAAAA_AAAA_AAAA_AABB, 64'hBBBB_BBBB_BBBB_BBCC, 64'hCCCC_CCCC_CCCC_CCCC, 64'hDDDD_DDDD_DDDD_DDDD,
+                   64'hAAAA_AAAA_AAAA_AAAA, 64'hBBBB_BBBB_BBBB_BBBB, 64'hCCCC_CCCC_CCCC_CCCC, 64'hDDDD_DDDD_DDDD_DDDD};
+        (signed decimal val)
+        expected output will be 0 due to clipping
+        */
+        $display("write 8 weights to the weight buffer and set weight_write_en");
+        enqueue_write(10'h00, 2'd3, 64'h1111_1111_1111_1111);
+        execute_transactions(1);
+        enqueue_write(10'h00, 2'd3, 64'h2222_2222_2222_2222);
+        execute_transactions(1);
+        enqueue_write(10'h00, 2'd3, 64'h3333_3333_3333_3333);
+        execute_transactions(1);
+        enqueue_write(10'h00, 2'd3, 64'h4444_4444_4444_4444);
+        execute_transactions(1);
+        enqueue_write(10'h00, 2'd3, 64'h1111_1111_1111_1111);
+        execute_transactions(1);
+        enqueue_write(10'h00, 2'd3, 64'h2222_2222_2222_2222);
+        execute_transactions(1);
+        enqueue_write(10'h00, 2'd3, 64'h3333_3333_3333_3333);
+        execute_transactions(1);
+        enqueue_write(10'h00, 2'd3, 64'h4444_4444_4444_4444);
+        execute_transactions(1);  
+
+        //set load_weights
+        enqueue_write(10'h22, 2'd0, 64'd2);
+        execute_transactions(1);
+        
+        enqueue_write(10'h22, 2'd0, 64'd0);
+        execute_transactions(1);
+        repeat(10) @(negedge clk);
+
+        $display("write 8 inputs to the input buffer and set input_write_en");
+        enqueue_write(10'h08, 2'd3, 64'hAAAA_AAAA_AAAA_AABB);
+        execute_transactions(1);
+        enqueue_write(10'h08, 2'd3, 64'hBBBB_BBBB_BBBB_BBCC);
+        execute_transactions(1);
+        enqueue_write(10'h08, 2'd3, 64'hCCCC_CCCC_CCCC_CCCC);
+        execute_transactions(1);
+        enqueue_write(10'h08, 2'd3, 64'hDDDD_DDDD_DDDD_DDDD);
+        execute_transactions(1);
+        enqueue_write(10'h08, 2'd3, 64'hAAAA_AAAA_AAAA_AAAA);
+        execute_transactions(1);
+        enqueue_write(10'h08, 2'd3, 64'hBBBB_BBBB_BBBB_BBBB);
+        execute_transactions(1);
+        enqueue_write(10'h08, 2'd3, 64'hCCCC_CCCC_CCCC_CCCC);
+        execute_transactions(1);
+        enqueue_write(10'h08, 2'd3, 64'hDDDD_DDDD_DDDD_DDDD);
+        execute_transactions(1);
+
+        //set start_inference
+        enqueue_write(10'h22, 2'd0, 64'd1);
+        execute_transactions(1);
+        enqueue_write(10'h22, 2'd0, 64'd0);
+        execute_transactions(1);
+
+        // wait for testcase1 inference to complete (data_ready pulse)
+        $display("waiting for inference completion (data_ready assert)");
+        poll_until(10'h023, 2'd0, 64'd1);
+        $display("data_ready asserted; waiting for it to clear");
+        poll_until(10'h023, 2'd0, 64'd0);
+
+        $display ("TESTCASE2: OUTPUT IN OUTPUT_REG");
+        //activation mode set to reLU
+        /*
+        expected output will be a +ve num
+        */
+        $display("write 8 weights to the weight buffer and set weight_write_en");
+        enqueue_write(10'h00, 2'd3, 64'h0202_0202_0202_0202);
+        execute_transactions(1);
+        enqueue_write(10'h00, 2'd3, 64'h0202_0202_0202_0202);
+        execute_transactions(1);
+        enqueue_write(10'h00, 2'd3, 64'h0202_0202_0202_0202);
+        execute_transactions(1);
+        enqueue_write(10'h00, 2'd3, 64'h0202_0202_0202_0202);
+        execute_transactions(1);
+        enqueue_write(10'h00, 2'd3, 64'h0202_0202_0202_0202);
+        execute_transactions(1);
+        enqueue_write(10'h00, 2'd3, 64'h0202_0202_0202_0202);
+        execute_transactions(1);
+        enqueue_write(10'h00, 2'd3, 64'h0202_0202_0202_0202);
+        execute_transactions(1);
+        enqueue_write(10'h00, 2'd3, 64'h0202_0202_0202_0202);
+        execute_transactions(1);  
+
+        //set load_weights
+        enqueue_write(10'h22, 2'd0, 64'd2);
+        execute_transactions(1);
+        
+        enqueue_write(10'h22, 2'd0, 64'd0);
+        execute_transactions(1);
+        repeat(10) @(negedge clk);
+
+        $display("write 8 inputs to the input buffer and set input_write_en");
+        enqueue_write(10'h08, 2'd3, 64'h0303_0303_0303_0303);
+        execute_transactions(1);
+        enqueue_write(10'h08, 2'd3, 64'h0303_0303_0303_0303);
+        execute_transactions(1);
+        enqueue_write(10'h08, 2'd3, 64'h0303_0303_0303_0303);
+        execute_transactions(1);
+        enqueue_write(10'h08, 2'd3, 64'h0303_0303_0303_0303);
+        execute_transactions(1);
+        enqueue_write(10'h08, 2'd3, 64'h0303_0303_0303_0303);
+        execute_transactions(1);
+        enqueue_write(10'h08, 2'd3, 64'h0303_0303_0303_0303);
+        execute_transactions(1);
+        enqueue_write(10'h08, 2'd3, 64'h0303_0303_0303_0303);
+        execute_transactions(1);
+        enqueue_write(10'h08, 2'd3, 64'h0303_0303_0303_0303);
+        execute_transactions(1);
+
+        //set start_inference
+        enqueue_write(10'h22, 2'd0, 64'd1);
+        execute_transactions(1);
+        enqueue_write(10'h22, 2'd0, 64'd0);
+        execute_transactions(1);
+
+        // wait for testcase2 inference to complete (data_ready pulse)
+        $display("waiting for inference completion (data_ready assert)");
+        poll_until(10'h023, 2'd0, 64'd1);
+        $display("data_ready asserted; waiting for it to clear");
+        poll_until(10'h023, 2'd0, 64'd0);
+
+
+        $display ("TESTCASE3: ASSERT ERR WHEN LESS THAN 8 WEIGHTS ARE WRITTEN");
+        // start from clean state
+        n_rst = 1;
+        reset_model();
+        reset_dut();
+        @(negedge clk);
+        // write only 4 of the 8 weight slots
+        enqueue_write(10'h00, 2'd3, 64'h0505_0505_0505_0505);
+        execute_transactions(1);
+        enqueue_write(10'h00, 2'd3, 64'h0505_0505_0505_0505);
+        execute_transactions(1);
+        enqueue_write(10'h00, 2'd3, 64'h0505_0505_0505_0505);
+        execute_transactions(1);
+        enqueue_write(10'h00, 2'd3, 64'h0505_0505_0505_0505);
+        execute_transactions(1);
+        // now assert load_weights (this should move controller to ERR because less than 8 writes were performed)
+        enqueue_write(10'h22, 2'd0, 64'd2);
+        execute_transactions(1);
+        enqueue_write(10'h22, 2'd0, 64'd0);
+        execute_transactions(1);
+        // poll the error register (0x020) for buffer_error == 1
+        poll_until(10'h020, 2'd0, 64'd1);
+        $display("detected buffer_error (ERR state) as expected");
+        enqueue_write(10'h22, 2'd0, 64'd0); // try to clear
+        execute_transactions(1);
+
+        // wait for testcase3 inference to complete (data_ready pulse)
+        $display("waiting for inference completion (data_ready assert)");
+        poll_until(10'h023, 2'd0, 64'd1);
+        $display("data_ready asserted; waiting for it to clear");
+        poll_until(10'h023, 2'd0, 64'd0);
+
+
+
+        #1000;
         $finish;
+
+    
     end
 endmodule
 
